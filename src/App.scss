@@ -1,0 +1,141 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+body {
+  font-family: "Poppins", Arial, sans-serif;
+  background: #1a202c;
+  color: white;
+}
+a {
+  color: inherit;
+  text-decoration: none;
+}
+ul {
+  list-style: none;
+}
+
+// Container
+.container {
+  max-width: 1024px;
+  margin: auto;
+}
+
+.container-player {
+}
+
+.menu {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  .sidebar-button {
+    padding: 1rem 0.5rem;
+  }
+}
+
+.list-container {
+  display: grid;
+  justify-items: center;
+  grid-template-columns: repeat(4, 1fr);
+}
+
+// Card | List Item
+.card {
+  margin: 1rem;
+  img {
+    // object-fit: cover;
+    max-width: 100%;
+  }
+  h3 {
+    font-weight: 400;
+  }
+  &:hover {
+    opacity: 0.75;
+  }
+  p {
+    font-weight: 200;
+  }
+}
+
+// Player
+.Player {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 30px;
+}
+
+// Movie | Serial | Actor Details Page
+.details {
+  position: relative;
+  display: flex;
+  max-width: 1000px;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  img {
+    width: 35%;
+    padding: 4rem 1rem;
+  }
+  .desc {
+    margin: 1.5rem 1rem 2rem;
+    h2 {
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: white;
+    }
+    span {
+      font-weight: 10;
+      font-size: 1.1rem;
+    }
+    p {
+      margin: 1rem 0;
+      font-weight: 10;
+      font-size: 1.1rem;
+    }
+
+    .select {
+      display: grid;
+      align-items: center;
+
+      color: black;
+      gap: 10px;
+      .Select-torrent {
+        max-width: 300px;
+        min-width: 300px;
+      }
+      .Select-subtitles {
+        max-width: 300px;
+        min-width: 300px;
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .list-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .details {
+    img {
+      width: 50%;
+      padding: 4rem 1rem 0;
+    }
+    flex-direction: column;
+    align-items: center;
+    .desc {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      .genres {
+        text-align: center;
+      }
+      p {
+        position: static;
+        text-align: center;
+      }
+    }
+  }
+}

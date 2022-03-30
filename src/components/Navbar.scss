@@ -1,0 +1,45 @@
+nav {
+	border-bottom: 1px solid #718096;
+	.nav-container {
+		max-width: 1280px;
+		margin: auto;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		height: 5.5rem;
+		padding: 0 2rem;
+		ul {
+			display: flex;
+			li {
+				padding: 0 1rem;
+				font-size: 1.2rem;
+				opacity: 0.75;
+				&:hover {
+					opacity: 1;
+				}
+			}
+		}
+	}
+}
+
+@media (max-width: 768px) {
+	nav {
+		height: 8rem;
+		.nav-container {
+			h1 {
+				margin: 1rem;
+			}
+			flex-direction: column;
+		}
+	}
+}
+
+@media (max-width: 576px) {
+	nav {
+		height: 13rem;
+		ul {
+			flex-direction: column;
+			align-items: center;
+		}
+	}
+}
