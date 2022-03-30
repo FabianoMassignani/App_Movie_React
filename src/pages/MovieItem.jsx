@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { AwesomeButton } from "react-awesome-button";
-import "react-awesome-button/dist/themes/theme-red.css";
 import Select from "react-select";
 import Moment from "react-moment";
 import {
@@ -21,7 +19,6 @@ import { IMG_API_HIGH, NO_IMAGE } from "../globalVariables";
 export const MovieItem = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const [selectedOptionSubtlite, setSelectedOptionSubtlite] = useState(null);
   const [selectedOptionTorrent, setSelectedOptionTorrent] = useState(null);
@@ -98,10 +95,6 @@ export const MovieItem = () => {
     dispatch(startTorrent(selectedOptionTorrent, Number(id)));
   };
 
-  const onBack = () => {
-    navigate(-1);
-  };
-
   const onChangeTorrent = (e) => {
     setSelectedOptionTorrent(e);
   };
@@ -117,18 +110,6 @@ export const MovieItem = () => {
         <Spinner />
       ) : (
         <div>
-          <div className="button-play" style={{ paddingTop: "20px" }}>
-            {
-              <button
-                style={{ width: "100px", height: "40px" }}
-                onClick={() => {
-                  onBack();
-                }}
-              >
-                Voltar
-              </button>
-            }
-          </div>
           <div className="details">
             <img
               src={poster_path ? IMG_API_HIGH + poster_path : NO_IMAGE}
@@ -177,21 +158,15 @@ export const MovieItem = () => {
               </div>
 
               <div className="select">
-                <div className="button-play">
+                <div className="button-play" style={{ paddingTop: "20px" }}>
                   {
-                    <AwesomeButton
-                      type="primary"
-                      disabled={
-                        loadingTorrents ||
-                        loadingSubtitles ||
-                        torrentsList?.length
-                      }
-                      onPress={() => {
-                        onPlay();
-                      }}
+                    <button
+                      disabled={loadingTorrents || loadingSubtitles}
+                      style={{ width: "100px", height: "40px" }}
+                      onClick={onPlay}
                     >
                       Play
-                    </AwesomeButton>
+                    </button>
                   }
                 </div>
                 <div className="Select-torrent">

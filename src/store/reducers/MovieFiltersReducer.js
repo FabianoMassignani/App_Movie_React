@@ -1,5 +1,4 @@
 import {
-  SET_TIPOS,
   SET_ORDEM,
   SET_SORT,
   GET_GENRES,
@@ -12,10 +11,6 @@ import {
 
 export const movieFiltersReducer = (
   state = {
-    tipo: {
-      value: "/",
-      label: "Movies",
-    },
     filters: {
       ordem: {
         value: "popular",
@@ -29,8 +24,6 @@ export const movieFiltersReducer = (
   switch (action.type) {
     case RESET_FILTERS:
       return { ...state, filters: {} };
-    case SET_TIPOS:
-      return { ...state, tipo: action.payload.tipo };
     case SET_ORDEM:
       return {
         ...state,

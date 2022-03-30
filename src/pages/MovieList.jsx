@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Moment from "react-moment";
-
 import { Searchbox } from "../components/Searchbox";
 import { Spinner } from "../components/Spinner";
 import { Navbar } from "../components/Navbar";
@@ -24,8 +23,9 @@ export const MovieList = () => {
   const { loading, movies, query, results, pages } = movieList;
 
   useEffect(() => {
+    if (!movies.length > 0) dispatch(getMovies(page, filters));
     dispatch(stopTorrent());
-  }, [dispatch]);
+  }, [dispatch, filters]);
 
   const fetchNextPage = () => {
     if (!query) {
@@ -41,8 +41,9 @@ export const MovieList = () => {
   return (
     <>
       <Navbar />
-      <SelectsFiltersMovie page={page} setPage={setPage} />
       <Searchbox movies />
+
+      <SelectsFiltersMovie page={page} setPage={setPage} />
       {loading && !movies.length > 0 ? (
         <Spinner />
       ) : results !== 0 ? (

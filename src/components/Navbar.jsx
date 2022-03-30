@@ -21,9 +21,6 @@ export const Navbar = ({ title = "MovieApp", icon = "fas fa-video" }) => {
           <li>
             <Link to="/serials">TV Shows</Link>
           </li>
-          <li>
-            <Link to="/actors">Actors</Link>
-          </li>
         </ul>
       </div>
     </nav>

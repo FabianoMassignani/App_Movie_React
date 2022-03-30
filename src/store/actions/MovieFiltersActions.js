@@ -1,6 +1,5 @@
 import axios from "axios";
 import {
-  SET_TIPOS,
   SET_ORDEM,
   SET_SORT,
   GET_GENRES,
@@ -12,16 +11,6 @@ import {
 } from "../constants/MovieFilters";
 
 import { RESET_MOVIES } from "../constants/movie";
-
-// Set Tipos
-export const setTipos = (tipo) => async (dispatch) => {
-  dispatch({ type: RESET_MOVIES });
-  dispatch({ type: RESET_FILTERS });
-  dispatch({
-    type: SET_TIPOS,
-    payload: { tipo: tipo },
-  });
-};
 
 // Set Ordem
 export const setOrdem = (ordem) => async (dispatch) => {

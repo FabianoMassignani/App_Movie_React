@@ -6,7 +6,7 @@
   padding: 0;
 }
 body {
-  font-family: "Poppins", Arial, sans-serif;
+  font-family: "Poppins", Arial, sans-serif ;
   background: #1a202c;
   color: white;
 }
@@ -42,6 +42,13 @@ ul {
   grid-template-columns: repeat(4, 1fr);
 }
 
+#filter {
+  width: 150px;
+  height: 150px;
+  background-image: ("src/assets/filter.png");
+  background-size: cover;
+}
+
 // Card | List Item
 .card {
   margin: 1rem;
@@ -51,6 +58,7 @@ ul {
   }
   h3 {
     font-weight: 400;
+    color: white;
   }
   &:hover {
     opacity: 0.75;
@@ -99,7 +107,6 @@ ul {
     .select {
       display: grid;
       align-items: center;
-
       color: black;
       gap: 10px;
       .Select-torrent {

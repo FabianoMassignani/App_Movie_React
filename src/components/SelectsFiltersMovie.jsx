@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
 import {
-  setTipos,
   setOrdem,
   setSort,
   getGenre,
@@ -20,22 +19,12 @@ export const SelectsFiltersMovie = (props) => {
   const dispatch = useDispatch();
   let navigate = useNavigate();
   const MovieFilters = useSelector((state) => state.movieFilters);
-  const { tipo, filters, genres } = MovieFilters;
+  const { filters, genres } = MovieFilters;
+  const { ordem } = filters;
 
   let ReleaseDates = [];
   let Scores = [];
   let currentTime = new Date();
-
-  const tipos = [
-    {
-      value: "/",
-      label: "Movies",
-    },
-    {
-      value: "/serials",
-      label: "TV Shows",
-    },
-  ];
 
   const ordems = [
     {
@@ -140,12 +129,6 @@ export const SelectsFiltersMovie = (props) => {
     singleValue: (styles, { data }) => ({ ...styles, fontSize: 14 }),
   };
 
-  const onChangeTipo = (e) => {
-    navigate(e.value);
-    dispatch(setTipos(e));
-    props.setPage(1);
-  };
-
   const onChangeOrdem = (e) => {
     dispatch(setOrdem(e));
     props.setPage(1);
@@ -177,27 +160,11 @@ export const SelectsFiltersMovie = (props) => {
   };
 
   useEffect(() => {
-    dispatch(getMovies(props.page, filters));
-  }, [filters, tipo]);
-
-  useEffect(() => {
     dispatch(getGenre());
   }, [dispatch]);
 
   return (
     <div className="Filters">
-      <div className="Select">
-        Tipo
-        <Select
-          styles={customStyles}
-          width="300px"
-          isSearchable={false}
-          value={tipo}
-          options={tipos}
-          onChange={(e) => onChangeTipo(e)}
-        />
-      </div>
-
       <div className="Select">
         Tipo By
         <Select
