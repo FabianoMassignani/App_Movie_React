@@ -14,7 +14,7 @@ import {
   SET_PAGE,
 } from "../constants/serial";
 
-import { getTorrentTV } from "./torrentActions";
+import { getTorrentTV } from "./torrent";
 
 import { API_KEY } from "../../globalVariables";
 

@@ -15,7 +15,7 @@ export const getTorrentTV = (nameBR, nameUS, date) => async (dispatch) => {
   dispatch({ type: GET_TORRENTS_REQUEST });
 
   const res = await axios.get(
-    `${HOST_API}/getMovie?nameBR=${nameBR}&nameUS=${nameUS}&date=${date}`
+    `${HOST_API}/torrents/getMovie?nameBR=${nameBR}&nameUS=${nameUS}&date=${date}`
   );
 
   dispatch({
@@ -30,7 +30,7 @@ export const getTorrentMovie = (nameBR, nameUS, date) => async (dispatch) => {
   dispatch({ type: GET_TORRENTS_REQUEST });
 
   const res = await axios.get(
-    `${HOST_API}/getMovie?nameBR=${nameBR}&nameUS=${nameUS}&date=${date}`
+    `${HOST_API}/torrents/getMovie?nameBR=${nameBR}&nameUS=${nameUS}&date=${date}`
   );
 
   dispatch({
@@ -45,8 +45,11 @@ export const startTorrent = (torrent, id) => async (dispatch) => {
   dispatch({ type: PLAY_TORRENT_REQUEST });
 
   await axios
-    .get(`${HOST_API}/start?magnet=${torrent.magnet}&id=${id}`)
-    .then((res) => {
+    .post(`${HOST_API}/start`, {
+      magnet: torrent.magnet,
+      id: id,
+    })
+    .then(function (response) {
       dispatch({
         type: PLAY_TORRENT,
       });

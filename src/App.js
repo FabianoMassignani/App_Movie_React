@@ -12,12 +12,12 @@ import "./App.scss";
 const App = () => {
   return (
     <BrowserRouter>
-      <div className="container">
+      <div className="App">
         <Routes>
           <Route path="/" element={<MovieList />} />
-          <Route path="/serials" element={<SerialList />} />
+          {/* <Route path="/serials" element={<SerialList />} /> */}
           <Route path="/movie/:id" element={<MovieItem />} />
-          <Route path="/serial/:id" element={<SerialItem />} />
+          {/* <Route path="/serial/:id" element={<SerialItem />} /> */}
           <Route path="/player" element={<Player />} />
           <Route element={<NotFoundPage />} />
         </Routes>

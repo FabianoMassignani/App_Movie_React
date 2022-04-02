@@ -5,18 +5,19 @@ import Moment from "react-moment";
 import { Searchbox } from "../components/Searchbox";
 import { Spinner } from "../components/Spinner";
 import { Navbar } from "../components/Navbar";
+import { FilterButton } from "../components/FilterButton";
 import { InfiniteScrolling } from "../components/InfiniteScrolling";
 import { IMG_API_LOW } from "../globalVariables";
 import { SelectsFiltersMovie } from "../components/SelectsFiltersMovie";
-import { getMovies } from "../store/actions/movieActions";
-import { stopTorrent } from "../store/actions/torrentActions";
-import { resetStateSubtitles } from "../store/actions/subtitlesActions";
+import { getMovies } from "../store/actions/movie";
+import { stopTorrent } from "../store/actions/torrent";
 
 export const MovieList = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [dataLength, setDataLength] = useState(30);
   const [hasMore, setHasMore] = useState(true);
+  const [showFilter, setShowFilter] = useState(false);
   const MovieFilters = useSelector((state) => state.movieFilters);
   const movieList = useSelector((state) => state.movieList);
   const { filters } = MovieFilters;
@@ -38,12 +39,28 @@ export const MovieList = () => {
     }
   };
 
-  return (
-    <>
-      <Navbar />
-      <Searchbox movies />
+  const handleFilter = () => {
+    setShowFilter(!showFilter);
+  };
 
-      <SelectsFiltersMovie page={page} setPage={setPage} />
+  return (
+    <div className="container">
+      <Navbar />
+      <div className="menu">
+        <div className="searchbox">
+          <Searchbox movies />
+        </div>
+        <div className="filter">
+          <FilterButton handleFilter={handleFilter} />
+        </div>
+      </div>
+
+      {showFilter ? (
+        <SelectsFiltersMovie page={page} setPage={setPage} />
+      ) : (
+        <></>
+      )}
+
       {loading && !movies.length > 0 ? (
         <Spinner />
       ) : results !== 0 ? (
@@ -80,6 +97,6 @@ export const MovieList = () => {
       ) : (
         <h2 className="py-2 text-center">No Movies Found</h2>
       )}
-    </>
+    </div>
   );
 };

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import VideoJS from "./VideoJS";
-import { HOST_API } from "../globalVariables";
 import socketIOClient from "socket.io-client";
 import { useDispatch } from "react-redux";
-import { stopTorrent } from "../store/actions/torrentActions";
+import { stopTorrent } from "../store/actions/torrent";
+import { HOST_API } from "../globalVariables";
 import { HOST_API2 } from "../globalVariables";
 
 export const Player = () => {
@@ -11,7 +11,9 @@ export const Player = () => {
   const dispatch = useDispatch();
   const [response, setResponse] = useState("");
   const [socketState, setSocket] = useState("");
-  const { legendas, playing, time } = response;
+  const [novo, setNovo] = useState("");
+
+  const { subtitle, playing, time } = response;
 
   useEffect(() => {
     const socket = socketIOClient(HOST_API2);
@@ -25,8 +27,35 @@ export const Player = () => {
     return () => socket.disconnect();
   }, []);
 
+  useEffect(() => {
+    const player = playerRef.current;
+    if (subtitle && player) {
+      if (novo !== subtitle.id) {
+        setNovo(subtitle.id);
+
+        var oldTracks = player.remoteTextTracks();
+        var i = oldTracks.length;
+        while (i--) {
+          player.removeRemoteTextTrack(oldTracks[i]);
+        }
+
+        player.addRemoteTextTrack(
+          {
+            key: subtitle.id,
+            kind: "subtitles",
+            src: subtitle.url,
+            mode: "showing",
+            srcLang: subtitle.language,
+            label: subtitle.filename,
+            default: subtitle.language,
+          },
+          false
+        );
+      }
+    }
+  }, [subtitle]);
+
   const videoJsOptions = {
-    // lookup the options in the docs for more options
     autoplay: true,
     controls: true,
     responsive: true,
@@ -34,22 +63,13 @@ export const Player = () => {
     sources: [
       {
         type: "video/mp4",
-        src: `${HOST_API}/stream`,
+        src: `${HOST_API}/video`,
       },
     ],
-    subtitles:
-      legendas &&
-      legendas.map((item, index) => ({
-        url: item.url,
-        language: item.language + index,
-        label: "Legenda " + index,
-      })),
-    defaultSubtitle: "pob0",
-    //defaultSubtitle pega a language
   };
 
   const addOffset = (offset) => {
-    let Player = document.getElementById("player");
+    const Player = playerRef.current;
     if (Player) {
       Array.from(Player.player.textTracks_.tracks_).forEach((track) => {
         if (track.mode === "showing") {
@@ -65,7 +85,7 @@ export const Player = () => {
   };
 
   const removeOffset = (videoId, offset) => {
-    let Player = document.getElementById("player");
+    const Player = playerRef.current;
     if (Player) {
       Array.from(Player.player.textTracks_.tracks_).forEach((track) => {
         if (track.mode === "showing") {
@@ -82,6 +102,7 @@ export const Player = () => {
 
   const handlePlayerReady = (player) => {
     playerRef.current = player;
+
     let currentTime = 0;
     let minutes = 0;
     let timeUpdate = 0;
@@ -163,24 +184,28 @@ export const Player = () => {
 
     player.on("error", () => {
       console.log("Player error");
-      player.dispose();
+      if (player) player.dispose();
       dispatch(stopTorrent());
     });
   };
 
   return (
     <div className="container-player">
-      <div style={{ display: "flex", justifyContent: "center" }}>
-        <p>
-          It's <time dateTime={time}>{time}</time>
-        </p>
+      <div className="status">
+        {time ? (
+          <p>
+            <time dateTime={time}>{time}</time>
+          </p>
+        ) : (
+          <p>Server off</p>
+        )}
       </div>
       {playing ? (
         <div className="video">
           <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
         </div>
       ) : (
-        <div style={{ display: "flex", justifyContent: "center" }}>
+        <div className="message">
           <h1> Escolha um filme ou Tv show</h1>
         </div>
       )}

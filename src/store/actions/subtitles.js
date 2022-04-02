@@ -11,13 +11,21 @@ import { HOST_API } from "../../globalVariables";
 export const getSubtitle = (nameBR, nameUS, date) => async (dispatch) => {
   dispatch({ type: GET_SUBTITLES_REQUEST });
 
-  const res = await axios.get(`${HOST_API}/subtitle?nameBR=${nameBR}&nameUS=${nameUS}&date=${date}`);
+  const res = await axios.get(
+    `${HOST_API}/subtitle/subtitle?nameBR=${nameBR}&nameUS=${nameUS}&date=${date}`
+  );
 
   dispatch({
     type: GET_SUBTITLES,
     payload: {
       subtitles: res.data.subtitles,
     },
+  });
+};
+
+export const setSubtitle = (subtitle) => async (dispatch) => {
+  await axios.post(`${HOST_API}/setSubtitle`, {
+    subtitle: subtitle,
   });
 };
 

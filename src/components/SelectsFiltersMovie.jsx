@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
 import Select from "react-select";
 
 import {
@@ -11,13 +10,11 @@ import {
   setVote,
   setScore,
   setDate,
-} from "../store/actions/MovieFiltersActions";
-import { getMovies } from "../store/actions/movieActions";
+} from "../store/actions/MovieFilters";
 import "./SelectsFilters.scss";
 
 export const SelectsFiltersMovie = (props) => {
   const dispatch = useDispatch();
-  let navigate = useNavigate();
   const MovieFilters = useSelector((state) => state.movieFilters);
   const { filters, genres } = MovieFilters;
   const { ordem } = filters;

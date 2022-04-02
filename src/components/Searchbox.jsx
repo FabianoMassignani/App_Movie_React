@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import "./Searchbox.scss";
 import { useDispatch } from "react-redux";
 
-import { searchMovies } from "../store/actions/movieActions";
-import { searchSerials } from "../store/actions/serialActions";
+import { searchMovies } from "../store/actions/movie";
+import { searchSerials } from "../store/actions/serial";
 
 export const Searchbox = (props) => {
   const [query, setQuery] = useState("");

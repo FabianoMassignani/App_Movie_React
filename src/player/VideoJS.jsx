@@ -2,11 +2,12 @@ import React from "react";
 import videojs from "video.js";
 import "video.js/dist/video-js.css";
 import "./VideoJS.css";
+
 export const VideoJS = (props) => {
   const videoRef = React.useRef(null);
   const playerRef = React.useRef(null);
   const { options, onReady } = props;
-  const { subtitles, defaultSubtitle } = props.options;
+
 
   React.useEffect(() => {
     // make sure Video.js player is only initialized once
@@ -45,17 +46,14 @@ export const VideoJS = (props) => {
         ref={videoRef}
         className="video-js vjs-big-play-centered"
       >
-        {subtitles &&
-          subtitles.map((item, index) => (
-            <track
-              key={index}
-              src={item.url}
-              kind="subtitles"
-              srcLang={item.language}
-              label={item.label}
-              default={item.language === defaultSubtitle}
-            />
-          ))}
+        {/* <track
+          key={subtitles.id}
+          src={subtitles.url}
+          kind="subtitles"
+          srcLang={subtitles.language}
+          label={subtitles.label}
+          default={subtitles.language === defaultSubtitle}
+        /> */}
       </video>
     </div>
   );

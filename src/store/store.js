@@ -5,11 +5,11 @@ import {
   movieListReducer,
   movieItemReducer,
   favoriteListReducer,
-} from "./reducers/movieReducer";
-import { serialListReducer, serialItemReducer } from "./reducers/serialReducer";
-import { torrentListReducer } from "./reducers/torrentReducer";
-import { subtitleListReducer } from "./reducers/subtitlesReducer";
-import { movieFiltersReducer } from "./reducers/MovieFiltersReducer";
+} from "./reducers/movie";
+import { serialListReducer, serialItemReducer } from "./reducers/serial";
+import { torrentListReducer } from "./reducers/torrent";
+import { subtitleListReducer } from "./reducers/subtitles";
+import { movieFiltersReducer } from "./reducers/MovieFilters";
 
 import { composeWithDevTools } from "redux-devtools-extension";
 

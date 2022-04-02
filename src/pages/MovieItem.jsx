@@ -3,14 +3,10 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import Moment from "react-moment";
-import {
-  getMovie,
-  removeFromFavs,
-  addToFavs,
-} from "../store/actions/movieActions";
-import { startTorrent } from "../store/actions/torrentActions";
-import { resetStateTorrents } from "../store/actions/torrentActions";
-import { resetStateSubtitles } from "../store/actions/subtitlesActions";
+
+import { getMovie, removeFromFavs, addToFavs } from "../store/actions/movie";
+import { startTorrent, resetStateTorrents } from "../store/actions/torrent";
+import { resetStateSubtitles, setSubtitle } from "../store/actions/subtitles";
 import { Spinner } from "../components/Spinner";
 import { Navbar } from "../components/Navbar";
 
@@ -75,6 +71,13 @@ export const MovieItem = () => {
 
     if (subtitles.length > 0) {
       const data = subtitles.map((item, index) => ({
+        id: item.id,
+        filename: item.filename,
+        downloads: item.downloads,
+        language: item.language,
+        url: item.url,
+        label: item.label,
+        score: item.score,
         value: index,
         label:
           item.downloads +
@@ -83,11 +86,11 @@ export const MovieItem = () => {
           " " +
           item.filename.substring(0, 30) +
           "...",
-        url: item.url,
       }));
 
       setSubtitlesList(data);
       setSelectedOptionSubtlite(data[0]);
+      dispatch(setSubtitle(data[0]));
     }
   }, [torrents, subtitles]);
 
@@ -101,10 +104,11 @@ export const MovieItem = () => {
 
   const onChangeSubtitle = (e) => {
     setSelectedOptionSubtlite(e);
+    dispatch(setSubtitle(e));
   };
 
   return (
-    <>
+    <div className="container">
       <Navbar />
       {loading ? (
         <Spinner />
@@ -194,6 +198,6 @@ export const MovieItem = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
