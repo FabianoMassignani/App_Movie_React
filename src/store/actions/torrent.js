@@ -41,28 +41,34 @@ export const getTorrentMovie = (nameBR, nameUS, date) => async (dispatch) => {
   });
 };
 
-export const startTorrent = (torrent, id) => async (dispatch) => {
-  dispatch({ type: PLAY_TORRENT_REQUEST });
+export const downloadTorrent =
+  (torrent, subtitles, movie) => async (dispatch) => {
+    dispatch({ type: PLAY_TORRENT_REQUEST });
 
-  await axios
-    .post(`${HOST_API}/start`, {
-      magnet: torrent.magnet,
-      id: id,
-    })
-    .then(function (response) {
-      dispatch({
-        type: PLAY_TORRENT,
+    await axios
+      .post(`${HOST_API}/download/add`, {
+        torrent: torrent,
+        subtitles: subtitles,
+        movie: movie,
+      })
+      .then(function (response) {
+        dispatch({
+          type: PLAY_TORRENT,
+        });
       });
-    });
+  };
+
+export const refresh = () => async (dispatch) => {
+  await axios.get(`${HOST_API}/download`);
 };
 
-export const stopTorrent = () => async (dispatch) => {
-  await axios.get(`${HOST_API}/stop`).then((res) => {
-    dispatch({
-      type: STOP_TORRENT,
-    });
-  });
-};
+// export const stopTorrent = () => async (dispatch) => {
+//   await axios.get(`${HOST_API}/stop`).then((res) => {
+//     dispatch({
+//       type: STOP_TORRENT,
+//     });
+//   });
+// };
 
 export const resetStateTorrents = () => async (dispatch) => {
   dispatch({

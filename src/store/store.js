@@ -9,12 +9,12 @@ import {
 import { serialListReducer, serialItemReducer } from "./reducers/serial";
 import { torrentListReducer } from "./reducers/torrent";
 import { subtitleListReducer } from "./reducers/subtitles";
-import { movieFiltersReducer } from "./reducers/MovieFilters";
+import { filtersReducer } from "./reducers/filters";
 
 import { composeWithDevTools } from "redux-devtools-extension";
 
 export const rootReducer = combineReducers({
-  movieFilters: movieFiltersReducer,
+  filters: filtersReducer,
   subtitleList: subtitleListReducer,
   torrentList: torrentListReducer,
   movieList: movieListReducer,

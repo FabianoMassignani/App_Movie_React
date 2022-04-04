@@ -23,12 +23,6 @@ export const getSubtitle = (nameBR, nameUS, date) => async (dispatch) => {
   });
 };
 
-export const setSubtitle = (subtitle) => async (dispatch) => {
-  await axios.post(`${HOST_API}/setSubtitle`, {
-    subtitle: subtitle,
-  });
-};
-
 export const resetStateSubtitles = () => async (dispatch) => {
   dispatch({
     type: RESET_STATES_SUBTITLES,

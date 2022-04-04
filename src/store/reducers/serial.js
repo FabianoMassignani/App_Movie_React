@@ -9,7 +9,6 @@ import {
   GET_SERIAL_REQUEST,
   GET_SERIAL,
   GET_SERIAL_FAIL,
-  SET_PAGE,
 } from "../constants/serial";
 
 export const serialListReducer = (
@@ -17,8 +16,6 @@ export const serialListReducer = (
   action
 ) => {
   switch (action.type) {
-    case SET_PAGE:
-      return { ...state, currentPage: action.payload.currentPage };
     case GET_SERIALS_REQUEST:
       return { ...state, loading: true, serials: [] };
     case GET_SERIALS:
@@ -37,7 +34,7 @@ export const serialListReducer = (
       return {
         ...state,
         nextLoading: false,
-        serials: [...action.payload],
+        serials: [...state.serials, ...action.payload],
       };
     case ADD_SERIALS_FAIL:
       return { ...state, nextLoading: false, message: action.payload.message };

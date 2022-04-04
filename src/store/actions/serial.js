@@ -3,7 +3,6 @@ import axios from "axios";
 import {
   ADD_SERIALS,
   ADD_SERIALS_REQUEST,
-  ADD_SERIALS_FAIL,
   GET_SERIALS,
   GET_SERIALS_REQUEST,
   GET_SERIALS_FAIL,
@@ -11,66 +10,42 @@ import {
   GET_SERIAL_REQUEST,
   GET_SERIAL,
   GET_SERIAL_FAIL,
-  SET_PAGE,
 } from "../constants/serial";
 
 import { getTorrentTV } from "./torrent";
 
 import { API_KEY } from "../../globalVariables";
 
-// Set current page
-export const setPage = (currentPage) => async (dispatch) => {
+// Get Popular Serials
+export const getSerials = () => async (dispatch) => {
+  dispatch({ type: GET_SERIALS_REQUEST });
+
+  const res = await axios.get(
+    // `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`
+  );
+
   dispatch({
-    type: SET_PAGE,
+    type: GET_SERIALS,
     payload: {
-      currentPage: currentPage,
+      serials: res.data.results,
+      pages: res.data.total_pages,
+      results: res.data.total_results,
     },
   });
 };
 
-// Get Popular Serials
-export const getSerials = () => async (dispatch) => {
-  try {
-    dispatch({ type: GET_SERIALS_REQUEST });
-
-    const res = await axios.get(
-      `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`
-    );
-
-    dispatch({
-      type: GET_SERIALS,
-      payload: {
-        serials: res.data.results,
-        pages: res.data.total_pages,
-        results: res.data.total_results,
-      },
-    });
-  } catch (error) {
-    dispatch({
-      type: ADD_SERIALS_FAIL,
-      payload: { message: error.response.data.status_message },
-    });
-  }
-};
-
 // Add Popular Serials
 export const addSerials = (page) => async (dispatch) => {
-  try {
-    dispatch({ type: ADD_SERIALS_REQUEST });
+  dispatch({ type: ADD_SERIALS_REQUEST });
 
-    const res = await axios.get(
-      `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=${page}`
-    );
-    dispatch({
-      type: ADD_SERIALS,
-      payload: res.data.results,
-    });
-  } catch (error) {
-    dispatch({
-      type: ADD_SERIALS_FAIL,
-      payload: { message: error.response.data.status_message },
-    });
-  }
+  const res = await axios.get(
+    `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=${page}`
+  );
+  dispatch({
+    type: ADD_SERIALS,
+    payload: res.data.results,
+  });
 };
 
 // Get Single Serial

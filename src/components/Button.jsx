@@ -1,7 +1,8 @@
 import React from "react";
-import filter from "../assets/filter.png";
+import downIcon from "../assets/down.png";
+import upIcon from "../assets/up.png";
 
-export const FilterButton = (props) => (
+export const Button = (props) => (
   <div style={{ padding: "1.5rem 1rem 0.75rem" }}>
     <button
       style={{
@@ -12,7 +13,7 @@ export const FilterButton = (props) => (
     >
       <img
         onClick={props.handleFilter}
-        src={filter}
+        src={props.showFilter ? upIcon : downIcon}
         alt="Loading..."
         style={{
           width: "35px",

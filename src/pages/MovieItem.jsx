@@ -5,8 +5,12 @@ import Select from "react-select";
 import Moment from "react-moment";
 
 import { getMovie, removeFromFavs, addToFavs } from "../store/actions/movie";
-import { startTorrent, resetStateTorrents } from "../store/actions/torrent";
-import { resetStateSubtitles, setSubtitle } from "../store/actions/subtitles";
+import {
+  downloadTorrent,
+  refresh,
+  resetStateTorrents,
+} from "../store/actions/torrent";
+import { resetStateSubtitles } from "../store/actions/subtitles";
 import { Spinner } from "../components/Spinner";
 import { Navbar } from "../components/Navbar";
 
@@ -30,6 +34,7 @@ export const MovieItem = () => {
   const { torrents, loadingTorrents, loadingPlay } = torrentList;
   const subtitleList = useSelector((state) => state.subtitleList);
   const { subtitles, loadingSubtitles } = subtitleList;
+
   const customStyles = {
     option: (provided, state) => ({
       ...provided,
@@ -90,12 +95,15 @@ export const MovieItem = () => {
 
       setSubtitlesList(data);
       setSelectedOptionSubtlite(data[0]);
-      dispatch(setSubtitle(data[0]));
     }
   }, [torrents, subtitles]);
 
-  const onPlay = () => {
-    dispatch(startTorrent(selectedOptionTorrent, Number(id)));
+  const onDownload = () => {
+    dispatch(downloadTorrent(selectedOptionTorrent, subtitlesList, movie));
+  };
+
+  const onrefresh = () => {
+    dispatch(refresh());
   };
 
   const onChangeTorrent = (e) => {
@@ -104,7 +112,6 @@ export const MovieItem = () => {
 
   const onChangeSubtitle = (e) => {
     setSelectedOptionSubtlite(e);
-    dispatch(setSubtitle(e));
   };
 
   return (
@@ -162,14 +169,24 @@ export const MovieItem = () => {
               </div>
 
               <div className="select">
-                <div className="button-play" style={{ paddingTop: "20px" }}>
+                <div className="download">
                   {
                     <button
                       disabled={loadingTorrents || loadingSubtitles}
                       style={{ width: "100px", height: "40px" }}
-                      onClick={onPlay}
+                      onClick={onDownload}
                     >
-                      Play
+                      Download
+                    </button>
+                  }
+                </div>
+                <div className="refresh">
+                  {
+                    <button
+                      style={{ width: "100px", height: "40px" }}
+                      onClick={onrefresh}
+                    >
+                      Refresh library
                     </button>
                   }
                 </div>
