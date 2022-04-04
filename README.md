@@ -9,6 +9,10 @@
 
 Add your TMDb API Key to .env.local/ REACT_APP_API_KEY
 
+## Player
+
+Use Player at http://'IPV4':3000/player in your TV.
+
 ## Start
 
 Install Dependencies
