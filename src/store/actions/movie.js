@@ -56,13 +56,7 @@ export const addMovies = (page, filters) => async (dispatch) => {
 
   let res;
 
-  if (
-    !filters.sort ||
-    !filters.genre ||
-    !filters.vote ||
-    !filters.score ||
-    !filters.releaseDate
-  ) {
+  if (Object.keys(filters).length !== 0) {
     res = await axios.get(
       `https://api.themoviedb.org/3/movie/${filters.ordem.value}?api_key=${API_KEY}&language=en-US&page=${page}`
     );
@@ -86,56 +80,6 @@ export const addMovies = (page, filters) => async (dispatch) => {
     payload: res.data.results,
   });
 };
-
-// Get Movies
-// export const getMovies = (page, filters) => async (dispatch) => {
-//   let res;
-//   dispatch({ type: GET_MOVIES_REQUEST });
-
-//   if (
-//     !filters.sort ||
-//     !filters.genre ||
-//     !filters.vote ||
-//     !filters.score ||
-//     !filters.releaseDate
-//   ) {
-//     res = await axios.get(
-//       `https://api.themoviedb.org/3/movie/${filters.ordem.value}?api_key=${API_KEY}&language=en-US&page=${page}`
-//     );
-//   }
-
-//   if (
-//     filters.sort ||
-//     filters.genre ||
-//     filters.vote ||
-//     filters.score ||
-//     filters.releaseDate
-//   ) {
-//     res = await axios.get(
-//       `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}${
-//         filters.genre ? `&with_genres=${filters.genre.value}` : ""
-//       }${filters.sort ? `&sort_by=${filters.sort.value}` : ""}${
-//         filters.vote ? `&vote_count.gte=${filters.vote.value}` : ""
-//       }${
-//         filters.releaseDate
-//           ? `&release_date.lte=${filters.releaseDate.value}`
-//           : ""
-//       }${
-//         filters.score ? `&vote_average.gte=${filters.score.value}` : ""
-//       }&language=en-US&page=${page}`
-//     );
-//   }
-
-//   dispatch({
-//     type: GET_MOVIES,
-//     payload: {
-//       page: page,
-//       movies: res.data.results,
-//       pages: res.data.total_pages,
-//       results: res.data.total_results,
-//     },
-//   });
-// };
 
 // Get Single Movie
 export const getMovie = (id) => async (dispatch) => {
