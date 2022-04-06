@@ -31,27 +31,8 @@ export const movieListReducer = (state = { movies: [] }, action) => {
       return {
         ...state,
         nextLoading: false,
-        // movies: state.movies.concat(action.payload),
         movies: [...state.movies, ...action.payload],
       };
-    // case GET_MOVIES_REQUEST:
-    //   return { ...state, loading: true };
-    // case GET_MOVIES:
-    //   if (action.payload.page === 1) {
-    //     return {
-    //       ...state,
-    //       loading: false,
-    //       movies: [...action.payload.movies],
-    //       pages: action.payload.pages,
-    //       results: action.payload.results,
-    //     };
-    //   } else {
-    //     return {
-    //       ...state,
-    //       loading: false,
-    //       movies: [...state.movies, ...action.payload.movies],
-    //     };
-    //   }
     case SEARCH_MOVIES: {
       return {
         ...state,

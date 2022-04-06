@@ -10,6 +10,7 @@ import {
   ADD_FAV,
   REMOVE_FAV,
 } from "../constants/movie";
+
 import { getTorrentMovie } from "./torrent";
 import { getSubtitle } from "./subtitles";
 import { API_KEY } from "../../globalVariables";

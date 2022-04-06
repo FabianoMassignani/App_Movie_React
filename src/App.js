@@ -4,6 +4,7 @@ import { MovieList } from "./pages/MovieList";
 import { SerialList } from "./pages/SerialList";
 import { MovieItem } from "./pages/MovieItem";
 import { SerialItem } from "./pages/SerialItem";
+import { LoginTrack } from "./pages/LoginTrack";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
 import "./App.scss";
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="/serials" element={<SerialList />} />
           <Route path="/movie/:id" element={<MovieItem />} />
           <Route path="/serial/:id" element={<SerialItem />} />
+          <Route path="/trakt" element={<LoginTrack />} />
           <Route element={<NotFoundPage />} />
         </Routes>
       </div>
