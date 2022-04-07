@@ -8,64 +8,45 @@ import { Navbar } from "../components/Navbar";
 import { Button } from "../components/Button";
 import { InfiniteScrolling } from "../components/InfiniteScrolling";
 import { IMG_API_LOW } from "../globalVariables";
-import { SelectsFilters } from "../components/SelectsFilters";
-import { getMovies, addMovies } from "../store/actions/movie";
 
-export const MovieList = () => {
+import { getMoviesHistory, addMoviesHistory } from "../store/actions/movie";
+
+export const MovieHistoryList = () => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [dataLength, setDataLength] = useState(20);
   const [hasMore, setHasMore] = useState(true);
-  const [showFilter, setShowFilter] = useState(false);
-  const Filters = useSelector((state) => state.filters);
   const movieList = useSelector((state) => state.movieList);
-  const { filters, ordem } = Filters;
-  const { loading, movies, query, results, pages } = movieList;
+  const { loading, moviesTrakt, resultsTrakt, pagesTrakt } = movieList;
 
   useEffect(() => {
-    if (!movies.length > 0) dispatch(getMovies(filters, ordem));
-  }, [dispatch, filters]);
+    dispatch(getMoviesHistory());
+    setPage(page + 1);
+  }, [dispatch]);
 
   const fetchNextPage = () => {
-    if (!query) {
-      dispatch(addMovies(page, filters, ordem));
-      setPage(page + 1);
-      setDataLength(dataLength + 20);
-      if (page === pages) {
-        setHasMore(false);
-      }
+    dispatch(addMoviesHistory(page));
+    setPage(page + 1);
+    setDataLength(dataLength + 20);
+    if (page === pagesTrakt) {
+      setHasMore(false);
     }
-  };
-
-  const handleFilter = () => {
-    setShowFilter(!showFilter);
   };
 
   return (
     <>
       <div className="container">
         <Navbar />
-        <div className="menu">
-          <div className="searchbox">
-            <Searchbox movies />
-          </div>
-          <div className="filter">
-            <Button handleFilter={handleFilter} showFilter={showFilter} />
-          </div>
-        </div>
-
-        <SelectsFilters showFilter={showFilter} />
-
-        {loading && !movies.length > 0 ? (
+        {loading && !moviesTrakt.length > 0 ? (
           <Spinner />
-        ) : results !== 0 ? (
+        ) : resultsTrakt !== 0 ? (
           <InfiniteScrolling
             dataLength={dataLength}
             next={fetchNextPage}
             hasMore={!loading && hasMore}
           >
             <div className="list-container">
-              {movies.map(
+              {moviesTrakt.map(
                 (movie, index) =>
                   movie.poster_path && (
                     <div className="card" key={index}>

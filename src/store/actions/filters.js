@@ -7,6 +7,7 @@ import {
 } from "../constants/filters";
 
 import { RESET_MOVIES } from "../constants/movie";
+import { API_KEY ,LANGUAGE} from "../../globalVariables";
 
 // Set Ordem
 export const setOrdem = (ordem) => async (dispatch) => {
@@ -18,7 +19,7 @@ export const setOrdem = (ordem) => async (dispatch) => {
   });
 };
 
-// Set Sort
+// Set Filters
 export const setFilters = (filters) => async (dispatch) => {
   dispatch({ type: RESET_MOVIES });
   dispatch({
@@ -30,7 +31,7 @@ export const setFilters = (filters) => async (dispatch) => {
 // get Genres
 export const getGenre = () => async (dispatch) => {
   const res = await axios.get(
-    "https://api.themoviedb.org/3/genre/movie/list?api_key=e033694029aca8ecc22a82a3b615a643&language=en-US"
+    `https://api.themoviedb.org/3/genre/movie/list?api_key=${API_KEY}&language=${LANGUAGE}`
   );
   if (res.data.genres) {
     const genres = res.data.genres.map((item, index) => ({

@@ -1,25 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Spinner } from "../components/Spinner";
 import { Navbar } from "../components/Navbar";
 
-import { login, Checkin, history, DeviceCode } from "../store/actions/trakt";
+import { Checkin, history, login, logout } from "../store/actions/trakt";
 
 export const LoginTrack = () => {
   const dispatch = useDispatch();
-
-  const trakt = useSelector((state) => state.traktUser);
-  const { loading, auth } = trakt;
-  const { expires_in, interval, user_code, verification_url } = auth;
+  const navigate = useNavigate();
+  const Trakt = useSelector((state) => state.TraktAuth);
+  const { loading, token, trakt, tokenLoading } = Trakt;
 
   useEffect(() => {
-    dispatch(DeviceCode());
-    if (user_code && interval) {
-      // dispatch(GetToken(user_code));
+    if (!token) {
+      dispatch(login(goTo));
+    } else {
+      dispatch(logout(goTo));
     }
   }, [dispatch]);
+
+  const goTo = () => {
+    navigate("/", { replace: true });
+  };
 
   return (
     <div className="container">
@@ -27,10 +31,9 @@ export const LoginTrack = () => {
       {loading ? (
         <Spinner />
       ) : (
-        <div>
-          <div>
-            Go to {verification_url} and use the code {user_code}
-          </div>
+        <div className="login">
+          <p>Go to {trakt?.verification_url} and use the code bellow</p>
+          <h2>{trakt?.user_code}</h2>
         </div>
       )}
     </div>

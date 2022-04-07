@@ -14,15 +14,14 @@ import {
 
 import { getTorrentTV } from "./torrent";
 
-import { API_KEY } from "../../globalVariables";
+import { API_KEY, LANGUAGE } from "../../globalVariables";
 
 // Get Popular Serials
 export const getSerials = () => async (dispatch) => {
   dispatch({ type: GET_SERIALS_REQUEST });
 
   const res = await axios.get(
-    // `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`
-    `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=1`
+    `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=${LANGUAGE}&page=1`
   );
 
   dispatch({
@@ -40,7 +39,7 @@ export const addSerials = (page) => async (dispatch) => {
   dispatch({ type: ADD_SERIALS_REQUEST });
 
   const res = await axios.get(
-    `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=en-US&page=${page}`
+    `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=${LANGUAGE}&page=${page}`
   );
   dispatch({
     type: ADD_SERIALS,
@@ -54,7 +53,7 @@ export const getSerial = (id) => async (dispatch) => {
     dispatch({ type: GET_SERIAL_REQUEST });
 
     const resUS = await axios.get(
-      `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=en-US`
+      `https://api.themoviedb.org/3/tv/${id}?api_key=${API_KEY}&language=${LANGUAGE}`
     );
 
     const resBR = await axios.get(

@@ -1,7 +1,17 @@
 .Filters {
   display: grid;
-  grid-template-columns: repeat(1, 1fr);
-  padding: 1rem 0 0rem ;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 1rem 0 0rem;
   justify-content: center;
   gap: 5px;
+}
+
+@media (max-width: 768px) {
+  .Filters {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    padding: 1rem 0 0rem;
+    justify-content: center;
+    gap: 5px;
+  }
 }

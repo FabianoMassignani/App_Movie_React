@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import Moment from "react-moment";
 
-import { getMovie, removeFromFavs, addToFavs } from "../store/actions/movie";
+import { getMovie } from "../store/actions/movie";
 import {
   downloadTorrent,
   refresh,
@@ -24,14 +24,15 @@ export const MovieItem = () => {
   const [selectedOptionTorrent, setSelectedOptionTorrent] = useState(null);
   const [torrentsList, setTorrentsList] = useState(null);
   const [subtitlesList, setSubtitlesList] = useState(null);
+
   const movieItem = useSelector((state) => state.movieItem);
   const { loading, movie } = movieItem;
   const { title, poster_path, vote_average, release_date, overview, genres } =
     movie;
-  const favoriteList = useSelector((state) => state.favoriteList);
-  const { favorites } = favoriteList;
+
   const torrentList = useSelector((state) => state.torrentList);
-  const { torrents, loadingTorrents, loadingPlay } = torrentList;
+  const { torrents, loadingTorrents } = torrentList;
+
   const subtitleList = useSelector((state) => state.subtitleList);
   const { subtitles, loadingSubtitles } = subtitleList;
 
@@ -129,7 +130,7 @@ export const MovieItem = () => {
             <div className="desc">
               <h2>
                 {title}{" "}
-                <span>
+                {/* <span>
                   {favorites &&
                   favorites.find((fav) => fav.id === Number(id)) ? (
                     <i
@@ -151,7 +152,7 @@ export const MovieItem = () => {
                       }}
                     ></i>
                   )}
-                </span>
+                </span> */}
               </h2>
               <span>{vote_average * 10}% | </span>
               <span>

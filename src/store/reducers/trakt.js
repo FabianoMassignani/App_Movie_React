@@ -3,11 +3,10 @@ import {
   GET_CODE_REQUEST,
   GET_TOKEN,
   GET_TOKEN_REQUEST,
-  ADD_TOKEN,
   REMOVE_TOKEN,
 } from "../constants/trakt";
 
-export const traktReducer = (state = { auth: {} }, action) => {
+export const traktReducer = (state = { trakt: {} }, action) => {
   switch (action.type) {
     case GET_CODE_REQUEST:
       return { ...state, loading: true };
@@ -15,17 +14,23 @@ export const traktReducer = (state = { auth: {} }, action) => {
       return {
         ...state,
         loading: false,
-        auth: action.payload.auth,
+        trakt: { ...state, ...action.payload.data },
       };
     case GET_TOKEN_REQUEST:
-      return {
-        ...state,
-        loading: true,
-      };
+      return { ...state, tokenLoading: true };
     case GET_TOKEN:
       return {
         ...state,
-        loading: false,
+        tokenLoading: false,
+        token: action.payload.data,
+        logged: true,
+      };
+    case REMOVE_TOKEN:
+      return {
+        ...state,
+        trakt: null,
+        token: null,
+        logged: false,
       };
     default:
       return state;

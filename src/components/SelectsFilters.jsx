@@ -144,7 +144,17 @@ export const SelectsFilters = (props) => {
               onChange={(e) => onChangeOrdem(e)}
             />
           </div>
-
+          <div className="Select">
+            Genres
+            <Select
+              styles={customStyles}
+              width="300px"
+              isSearchable={false}
+              value={filters.genre}
+              options={genres}
+              onChange={(e) => onChangeFilters({ ...filters, genre: e })}
+            />
+          </div>
           <div className="Select">
             Sort By
             <Select
@@ -157,17 +167,6 @@ export const SelectsFilters = (props) => {
             />
           </div>
 
-          <div className="Select">
-            Genres
-            <Select
-              styles={customStyles}
-              width="300px"
-              isSearchable={false}
-              value={filters.genre}
-              options={genres}
-              onChange={(e) => onChangeFilters({ ...filters, genre: e })}
-            />
-          </div>
           <div className="Select">
             Release Dates
             <Select

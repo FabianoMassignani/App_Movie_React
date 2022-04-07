@@ -29,10 +29,13 @@ export const SerialItem = () => {
   const { loading, serial } = serialItem;
   const { name, poster_path, first_air_date, vote_average, overview, genres } =
     serial;
+    
   const torrentList = useSelector((state) => state.torrentList);
   const { torrents, loadingTorrents } = torrentList;
+
   const subtitleList = useSelector((state) => state.subtitleList);
   const { subtitles, loadingSubtitles } = subtitleList;
+
   const customStyles = {
     option: (provided, state) => ({
       ...provided,

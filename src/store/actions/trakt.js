@@ -5,22 +5,13 @@ import {
   GET_CODE_REQUEST,
   GET_TOKEN,
   GET_TOKEN_REQUEST,
-  ADD_TOKEN,
   REMOVE_TOKEN,
 } from "../constants/trakt";
 
-import {
-  TRAKT_USERNAME,
-  CLIENT_ID,
-  CLIENT_SECRET,
-} from "../../globalVariables";
+import { CLIENT_ID, CLIENT_SECRET } from "../../globalVariables";
 
-export const DeviceCode = () => async (dispatch) => {
+export const login = (goTo) => async (dispatch) => {
   dispatch({ type: GET_CODE_REQUEST });
-
-  let headers = {
-    "Content-Type": "application/json",
-  };
 
   let res = await axios.post(
     "https://private-anon-239d9a0267-trakt.apiary-proxy.com/oauth/device/code",
@@ -28,97 +19,82 @@ export const DeviceCode = () => async (dispatch) => {
       client_id: CLIENT_ID,
     },
     {
-      headers: headers,
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
   );
 
   dispatch({
     type: GET_CODE,
     payload: {
-      auth: res.data,
+      data: res.data,
     },
   });
 
-  var startTime = new Date().getTime();
-  var endTime = new Date().getTime() + res.data.expires_in * 1000;
+  dispatch({
+    type: GET_TOKEN_REQUEST,
+  });
 
-  var interval = setInterval(function () {
-    if (new Date().getTime() - startTime > endTime) {
-      clearInterval(interval);
-      return;
+  let time;
+
+  var intervalIdentifier = setInterval(async function () {
+    time += res.data.interval;
+
+    if (time == res.data.expires_in) {
+      clearInterval(intervalIdentifier);
     }
-    console.log("esperando");
-    let ress = GetToken(res.data.user_code);
-    console.log(ress);
+
+    await axios
+      .post(
+        `https://private-anon-239d9a0267-trakt.apiary-proxy.com/oauth/device/token`,
+        {
+          code: res.data.device_code,
+          client_id: CLIENT_ID,
+          client_secret: CLIENT_SECRET,
+        },
+        {}
+      )
+      .then((response) => {
+        clearInterval(intervalIdentifier);
+        localStorage.setItem("TokenTrakt", JSON.stringify(response.data));
+
+        dispatch({
+          type: GET_TOKEN,
+          payload: {
+            data: response.data,
+          },
+        });
+        goTo();
+      })
+      .catch((error) => {});
   }, res.data.interval * 1000);
-
-  // dispatch({
-  //   type: GET_CODE,
-  //   payload: {
-  //     auth: res.data.interval,
-  //   },
-  // });
 };
 
-const GetToken = async (user_code) => {
-  let headers = {
-    "Content-Type": "application/json",
-  };
+export const logout = (goTo) => async (dispatch, getState) => {
+  dispatch({ type: GET_CODE_REQUEST });
 
-  let data = {
-    code: user_code,
-    client_id: CLIENT_ID,
-    client_secret: CLIENT_SECRET,
-  };
+  let res = await axios
+    .post(
+      "https://private-anon-21aaaa1f73-trakt.apiary-proxy.com/oauth/revoke",
+      {
+        client_id: CLIENT_ID,
+        client_secret: CLIENT_SECRET,
+        token: getState().TraktAuth.token,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    )
+    .then((response) => {
+      localStorage.setItem("TokenTrakt", JSON.stringify(null));
+      dispatch({
+        type: REMOVE_TOKEN,
+      });
 
-  let res = await axios.post(
-    `https://private-anon-239d9a0267-trakt.apiary-mock.com/oauth/device/token`,
-    { data },
-    {
-      headers,
-    }
-  );
-
-  return res;
+      goTo();
+    })
+    .catch((error) => {});
 };
-
-// export const history = () => async () => {
-//   let moviesGnreData = await axios.get(
-//     `https://api.trakt.tv/users/${TRAKT_USERNAME}/history/movies?extended=full&page=2&limit=20`,
-//     {
-//       headers: {
-//         "Content-Type": "application/json",
-//         "trakt-api-key": CLIENT_ID,
-//         "trakt-api-version": "2",
-//       },
-//     }
-//   );
-//   console.log(moviesGnreData.data); // 10
-// };
-
-// export const Checkin = (data) => async () => {
-//   const headers = {
-//     "Content-Type": "application/json",
-//     Authorization:
-//       "Bearer 822e7f6f9938e9f0210d794645e6c05ef0f9240554caa6936304429a8133a2bd",
-//     "trakt-api-version": "2",
-//     "trakt-api-key": CLIENT_ID,
-//   };
-
-//   axios
-//     .post(
-//       "https://api.trakt.tv/checkin",
-//       {
-//         movie: data,
-//       },
-//       {
-//         headers: headers,
-//       }
-//     )
-//     .then((response) => {
-//       console.log(response); // 10
-//     })
-//     .catch((error) => {
-//       console.log(error); // 10
-//     });
-// };

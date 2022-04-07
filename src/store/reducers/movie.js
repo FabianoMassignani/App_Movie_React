@@ -6,17 +6,24 @@ import {
   SEARCH_MOVIES,
   GET_MOVIE_REQUEST,
   GET_MOVIE,
+  GET_MOVIES_TRAKT,
+  GET_MOVIES_TRAKT_REQUEST,
+  ADD_MOVIES_TRAKT,
+  ADD_MOVIES_TRAKT_REQUEST,
   RESET_MOVIES,
-  ADD_FAV,
-  REMOVE_FAV,
 } from "../constants/movie";
 
-export const movieListReducer = (state = { movies: [] }, action) => {
+export const movieListReducer = (
+  state = { movies: [], moviesTrakt: [] },
+  action
+) => {
   switch (action.type) {
     case RESET_MOVIES:
       return { ...state, movies: [] };
+
+    //---------------------------------------------------------
     case GET_MOVIES_REQUEST:
-      return { loading: true, movies: [] };
+      return { ...state, loading: true, movies: [] };
     case GET_MOVIES:
       return {
         ...state,
@@ -33,6 +40,29 @@ export const movieListReducer = (state = { movies: [] }, action) => {
         nextLoading: false,
         movies: [...state.movies, ...action.payload],
       };
+    //---------------------------------------------------------
+    case GET_MOVIES_TRAKT_REQUEST:
+      return { ...state, loading: true, moviesTrakt: [] };
+    case GET_MOVIES_TRAKT:
+      return {
+        ...state,
+        loading: false,
+        resultsTrakt: action.payload.resultsTrakt,
+        pagesTrakt: action.payload.pagesTrakt,
+        moviesTrakt: [...state.moviesTrakt, ...action.payload.moviesTrakt],
+      };
+    case ADD_MOVIES_TRAKT_REQUEST:
+      return { ...state, loading: true };
+    case ADD_MOVIES_TRAKT:
+      let a = action.payload;
+      let b = state.moviesTrakt;
+      return {
+        ...state,
+        loading: false,
+        moviesTrakt: [...state.moviesTrakt, ...action.payload],
+      };
+
+    //---------------------------------------------------------
     case SEARCH_MOVIES: {
       return {
         ...state,
@@ -63,31 +93,31 @@ export const movieItemReducer = (state = { movie: {} }, action) => {
   }
 };
 
-export const favoriteListReducer = (state = { favorites: [] }, action) => {
-  switch (action.type) {
-    case ADD_FAV:
-      const item = action.payload;
-      const existItem = state.favorites.find((x) => x.id === item.id);
+// export const favoriteListReducer = (state = { favorites: [] }, action) => {
+//   switch (action.type) {
+//     case ADD_FAV:
+//       const item = action.payload;
+//       const existItem = state.favorites.find((x) => x.id === item.id);
 
-      if (existItem) {
-        return {
-          ...state,
-          favorites: state.favorites.map((x) =>
-            x.id === existItem.id ? item : x
-          ),
-        };
-      } else {
-        return {
-          ...state,
-          favorites: [...state.favorites, item],
-        };
-      }
-    case REMOVE_FAV:
-      return {
-        ...state,
-        favorites: state.favorites.filter((x) => x.id !== action.payload),
-      };
-    default:
-      return state;
-  }
-};
+//       if (existItem) {
+//         return {
+//           ...state,
+//           favorites: state.favorites.map((x) =>
+//             x.id === existItem.id ? item : x
+//           ),
+//         };
+//       } else {
+//         return {
+//           ...state,
+//           favorites: [...state.favorites, item],
+//         };
+//       }
+//     case REMOVE_FAV:
+//       return {
+//         ...state,
+//         favorites: state.favorites.filter((x) => x.id !== action.payload),
+//       };
+//     default:
+//       return state;
+//   }
+// };
