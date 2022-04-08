@@ -185,7 +185,7 @@ export const addMoviesHistory = (page) => async (dispatch) => {
 
     dispatch({
       type: ADD_MOVIES_TRAKT,
-      payload: [...resTmdb.data],
+      payload: [resTmdb.data],
     });
   }
 };

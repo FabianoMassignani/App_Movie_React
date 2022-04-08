@@ -170,6 +170,16 @@ export const MovieItem = () => {
               </div>
 
               <div className="select">
+                <div className="play">
+                  {
+                    <button
+                      disabled={loadingTorrents || loadingSubtitles}
+                      style={{ width: "100px", height: "40px" }}
+                    >
+                      play
+                    </button>
+                  }
+                </div>
                 <div className="download">
                   {
                     <button
