@@ -13,7 +13,7 @@ import { getMovies, addMovies } from "../store/actions/movie";
 
 export const MovieList = () => {
   const dispatch = useDispatch();
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(2);
   const [dataLength, setDataLength] = useState(20);
   const [hasMore, setHasMore] = useState(true);
   const [showFilter, setShowFilter] = useState(false);

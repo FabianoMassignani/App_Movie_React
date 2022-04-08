@@ -3,8 +3,8 @@ import axios from "axios";
 import {
   GET_TORRENTS_REQUEST,
   GET_TORRENTS,
-  PLAY_TORRENT,
-  PLAY_TORRENT_REQUEST,
+  DOWNLOAD_TORRENT,
+  DOWNLOAD_TORRENT_REQUEST,
   STOP_TORRENT,
   RESET_STATES_TORRENTS,
 } from "../constants/torrent";
@@ -43,7 +43,7 @@ export const getTorrentMovie = (nameBR, nameUS, date) => async (dispatch) => {
 
 export const downloadTorrent =
   (torrent, subtitles, movie) => async (dispatch) => {
-    dispatch({ type: PLAY_TORRENT_REQUEST });
+    dispatch({ type: DOWNLOAD_TORRENT_REQUEST });
 
     await axios
       .post(`${HOST_API}/download/add`, {
@@ -53,7 +53,7 @@ export const downloadTorrent =
       })
       .then(function (response) {
         dispatch({
-          type: PLAY_TORRENT,
+          type: DOWNLOAD_TORRENT,
         });
       });
   };
