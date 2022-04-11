@@ -6,6 +6,8 @@ import {
   STOP_TORRENT,
   STOP_TORRENT_REQUEST,
   RESET_STATES_TORRENTS,
+  PLAY_TORRENT_REQUEST,
+  PLAY_TORRENT,
 } from "../constants/torrent";
 
 export const torrentListReducer = (state = { torrents: [] }, action) => {
@@ -28,6 +30,18 @@ export const torrentListReducer = (state = { torrents: [] }, action) => {
         ...state,
         loadingPlay: false,
       };
+
+    case PLAY_TORRENT_REQUEST:
+      return {
+        ...state,
+        loadingPlay: true,
+      };
+    case PLAY_TORRENT:
+      return {
+        ...state,
+        loadingPlay: false,
+      };
+
     case STOP_TORRENT_REQUEST:
       return {
         loadingStop: true,

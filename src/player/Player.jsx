@@ -2,13 +2,10 @@ import React from "react";
 import { useSelector } from "react-redux";
 import VideoJS from "./VideoJS"; // point to where the functional component is stored
 
-import { HOST_API } from "../../globalVariables";
+import { HOST_API } from "../globalVariables";
 
-export const Player = () => {
+export const Player = (props) => {
   const playerRef = React.useRef(null);
-
-  const subtitleList = useSelector((state) => state.subtitleList);
-  const { subtitles, subtitle, loadingSubtitles } = subtitleList;
 
   const videoJsOptions = {
     // lookup the options in the docs for more options
@@ -23,13 +20,13 @@ export const Player = () => {
       },
     ],
     subtitles:
-      subtitles &&
-      subtitles.map((item, index) => ({
+      props.subtitles &&
+      props.subtitles.map((item, index) => ({
         url: item.url,
-        language: item.language,
-        label: "Legenda " + index,
+        language: item.language + index,
+        label: item.label,
       })),
-    defaultSubtitle: "pb 0",
+    defaultSubtitle: props.subtitles[0].language + "0",
   };
 
   const addOffset = (offset) => {

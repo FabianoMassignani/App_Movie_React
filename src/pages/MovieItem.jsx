@@ -7,12 +7,16 @@ import Moment from "react-moment";
 import { getMovie } from "../store/actions/movie";
 import {
   downloadTorrent,
+  playTorrent,
+  shutdown,
   refresh,
   resetStateTorrents,
 } from "../store/actions/torrent";
 import { resetStateSubtitles } from "../store/actions/subtitles";
 import { Spinner } from "../components/Spinner";
 import { Navbar } from "../components/Navbar";
+
+import { Player } from "../player/Player";
 
 import { IMG_API_HIGH, NO_IMAGE } from "../globalVariables";
 
@@ -24,6 +28,8 @@ export const MovieItem = () => {
   const [selectedOptionTorrent, setSelectedOptionTorrent] = useState(null);
   const [torrentsList, setTorrentsList] = useState(null);
   const [subtitlesList, setSubtitlesList] = useState(null);
+
+  const [showPlayer, setShowPlayer] = useState(false);
 
   const movieItem = useSelector((state) => state.movieItem);
   const { loading, movie } = movieItem;
@@ -50,12 +56,9 @@ export const MovieItem = () => {
 
   useEffect(() => {
     dispatch(getMovie(Number(id)));
-  }, [dispatch, id]);
-
-  useEffect(() => {
     dispatch(resetStateTorrents());
     dispatch(resetStateSubtitles());
-  }, [loadingTorrents, loadingSubtitles]);
+  }, [dispatch, id]);
 
   useEffect(() => {
     if (torrents.length > 0) {
@@ -101,6 +104,15 @@ export const MovieItem = () => {
 
   const onDownload = () => {
     dispatch(downloadTorrent(selectedOptionTorrent, subtitlesList, movie));
+  };
+
+  const onPlay = () => {
+    dispatch(playTorrent(selectedOptionTorrent, movie, setShowPlayer));
+  };
+
+  const stop = () => {
+    dispatch(shutdown());
+    setShowPlayer(false);
   };
 
   const onrefresh = () => {
@@ -169,14 +181,27 @@ export const MovieItem = () => {
                 <p>{overview}</p>
               </div>
 
-              <div className="select">
+              <div className="menu">
                 <div className="play">
                   {
                     <button
                       disabled={loadingTorrents || loadingSubtitles}
                       style={{ width: "100px", height: "40px" }}
+                      onClick={onPlay}
                     >
                       play
+                    </button>
+                  }
+                </div>
+
+                <div className="play">
+                  {
+                    <button
+                      disabled={loadingTorrents || loadingSubtitles}
+                      style={{ width: "100px", height: "40px" }}
+                      onClick={stop}
+                    >
+                      parar
                     </button>
                   }
                 </div>
@@ -224,6 +249,16 @@ export const MovieItem = () => {
               </div>
             </div>
           </div>
+
+          {showPlayer ? (
+            <div>
+              <Player subtitles={subtitles} />
+            </div>
+          ) : (
+            <div>
+              <Spinner />
+            </div>
+          )}
         </div>
       )}
     </div>
