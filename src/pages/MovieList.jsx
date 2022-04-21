@@ -10,6 +10,7 @@ import { InfiniteScrolling } from "../components/InfiniteScrolling";
 import { IMG_API_LOW } from "../globalVariables";
 import { SelectsFilters } from "../components/SelectsFilters";
 import { getMovies, addMovies } from "../store/actions/movie";
+import { shutdown } from "../store/actions/torrent";
 
 export const MovieList = () => {
   const dispatch = useDispatch();
@@ -25,6 +26,10 @@ export const MovieList = () => {
   useEffect(() => {
     if (!movies.length > 0) dispatch(getMovies(filters, ordem));
   }, [dispatch, filters]);
+
+  useEffect(() => {
+    dispatch(shutdown());
+  }, []);
 
   const fetchNextPage = () => {
     if (!query) {

@@ -1,14 +1,13 @@
 import {
   ADD_SERIALS,
   ADD_SERIALS_REQUEST,
-  ADD_SERIALS_FAIL,
   GET_SERIALS,
   GET_SERIALS_REQUEST,
-  GET_SERIALS_FAIL,
   SEARCH_SERIALS,
   GET_SERIAL_REQUEST,
   GET_SERIAL,
-  GET_SERIAL_FAIL,
+  GET_EPISODE,
+  GET_EPISODE_REQUEST,
 } from "../constants/serial";
 
 export const serialListReducer = (
@@ -26,8 +25,6 @@ export const serialListReducer = (
         pages: action.payload.pages,
         results: action.payload.results,
       };
-    case GET_SERIALS_FAIL:
-      return { ...state, nextLoading: false, message: action.payload.message };
     case ADD_SERIALS_REQUEST:
       return { ...state, nextLoading: true };
     case ADD_SERIALS:
@@ -36,8 +33,6 @@ export const serialListReducer = (
         nextLoading: false,
         serials: [...state.serials, ...action.payload],
       };
-    case ADD_SERIALS_FAIL:
-      return { ...state, nextLoading: false, message: action.payload.message };
     case SEARCH_SERIALS: {
       return {
         ...state,
@@ -53,7 +48,10 @@ export const serialListReducer = (
   }
 };
 
-export const serialItemReducer = (state = { serial: {} }, action) => {
+export const serialItemReducer = (
+  state = { serial: {}, episode: null },
+  action
+) => {
   switch (action.type) {
     case GET_SERIAL_REQUEST:
       return { ...state, loading: true };
@@ -61,10 +59,17 @@ export const serialItemReducer = (state = { serial: {} }, action) => {
       return {
         ...state,
         serial: action.payload,
+        episode: null ,
         loading: false,
       };
-    case GET_SERIAL_FAIL:
-      return { ...state, nextLoading: false, message: action.payload.message };
+    case GET_EPISODE_REQUEST:
+      return { ...state, loading: true, episode: null };
+    case GET_EPISODE:
+      return {
+        ...state,
+        loading: false,
+        episode: action.payload,
+      };
     default:
       return state;
   }

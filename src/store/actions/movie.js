@@ -55,14 +55,14 @@ export const getMovies = (filters, ordem) => async (dispatch) => {
 };
 
 // Get Popular Movies
-export const addMovies = (page, filters) => async (dispatch) => {
+export const addMovies = (page, filters, ordem) => async (dispatch) => {
   dispatch({ type: ADD_MOVIES_REQUEST });
 
   let res;
 
-  if (Object.keys(filters).length !== 0) {
+  if (Object.keys(filters).length === 0) {
     res = await axios.get(
-      `https://api.themoviedb.org/3/movie/${filters.ordem.value}?api_key=${API_KEY}&language=${LANGUAGE}&page=${page}`
+      `https://api.themoviedb.org/3/movie/${ordem.value}?api_key=${API_KEY}&language=${LANGUAGE}&page=${page}`
     );
   } else {
     res = await axios.get(
@@ -98,16 +98,14 @@ export const getMovie = (id) => async (dispatch) => {
     payload: res.data,
   });
 
-  const resUS = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=en-US`
+  const resPT = await axios.get(
+    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR`
   );
 
-  dispatch(
-    getTorrentMovie(res.data.title, resUS.data.title, resUS.data.release_date)
-  );
+  dispatch(getTorrentMovie(res.data.title, res.data.release_date));
 
   dispatch(
-    getSubtitle(res.data.title, resUS.data.title, resUS.data.release_date)
+    getSubtitle(resPT.data.title, res.data.title, res.data.release_date)
   );
 };
 

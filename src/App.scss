@@ -20,7 +20,7 @@ ul {
 
 // Container
 .container {
-  max-width: 1100px;
+  max-width: 1300px;
   margin: auto;
 }
 
@@ -37,7 +37,7 @@ ul {
 .list-container {
   display: grid;
   justify-items: center;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
 }
 
 #filter {
@@ -77,7 +77,7 @@ ul {
 .details {
   position: relative;
   display: flex;
-  max-width: 1000px;
+  max-width: 1200px;
   align-items: flex-start;
 
   img {
@@ -97,7 +97,7 @@ ul {
     }
     p {
       margin: 1rem 0;
-      font-weight: 10;
+      font-weight: 5;
       font-size: 1.1rem;
     }
 
@@ -107,13 +107,59 @@ ul {
       color: black;
       gap: 10px;
 
+      .seasom-episode {
+        display: flex;
+        align-items: center;
+        color: black;
+        gap: 10px;
+
+        .Select-seasom {
+          max-width: 145px;
+          min-width: 145px;
+        }
+        .Select-episode {
+          max-width: 145px;
+          min-width: 145px;
+        }
+      }
+
       .Select-torrent {
-        max-width: 300px;
-        min-width: 300px;
+        max-width: 400px;
+        min-width: 400px;
       }
       .Select-subtitles {
-        max-width: 300px;
-        min-width: 300px;
+        max-width: 400px;
+        min-width: 400px;
+      }
+    }
+
+    .detailsEpisode {
+      position: relative;
+      display: flex;
+      max-width: 1000px;
+      align-items: flex-start;
+
+      img {
+        width: 35%;
+        padding: 1rem 1rem;
+      }
+      .descEpisode {
+        margin: 1rem 0rem 1rem;
+
+        h2 {
+          font-size: 1rem;
+          font-weight: 400;
+          color: white;
+        }
+        span {
+          font-weight: 5;
+          font-size: 1rem;
+        }
+        p {
+          margin: 1rem 0;
+          font-weight: 5;
+          font-size: 1rem;
+        }
       }
     }
   }

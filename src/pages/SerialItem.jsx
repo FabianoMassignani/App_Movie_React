@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getSerial } from "../store/actions/serial";
+import { getSerial, getEpisode } from "../store/actions/serial";
 import { Navbar } from "../components/Navbar";
 import Moment from "react-moment";
 import Select from "react-select";
 
 import {
-  downloadTorrent,
-  refresh,
+  playTorrent,
+  shutdown,
   resetStateTorrents,
+  getTorrentTV,
 } from "../store/actions/torrent";
 
 import { Spinner } from "../components/Spinner";
@@ -21,15 +22,23 @@ export const SerialItem = () => {
 
   const [selectedOptionSubtlite, setSelectedOptionSubtlite] = useState(null);
   const [selectedOptionTorrent, setSelectedOptionTorrent] = useState(null);
+  const [selectedSeasom, setSelectedSeasom] = useState(null);
+  const [selectedEpisode, setSelectedEpisode] = useState(null);
+
   const [torrentsList, setTorrentsList] = useState(null);
   const [subtitlesList, setSubtitlesList] = useState(null);
+  const [seasomList, setSeasomsList] = useState([]);
+  const [episodeList, setEpisodeList] = useState(null);
+
   const [isShown, setIsShown] = useState(false);
 
   const serialItem = useSelector((state) => state.serialItem);
-  const { loading, serial } = serialItem;
+  const { loading, serial, episode } = serialItem;
   const { name, poster_path, first_air_date, vote_average, overview, genres } =
     serial;
-    
+
+  // const {name overview ,air_date,still_path} = episode.name;
+
   const torrentList = useSelector((state) => state.torrentList);
   const { torrents, loadingTorrents } = torrentList;
 
@@ -48,6 +57,47 @@ export const SerialItem = () => {
     singleValue: (styles, { data }) => ({ ...styles, fontSize: 14 }),
   };
 
+  useEffect(() => {
+    dispatch(getSerial(Number(id)));
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (serial.seasons) {
+      let seasons = [];
+
+      serial.seasons.forEach((item, index, arr) => {
+        if (item.name !== "Specials") {
+          seasons.push({
+            label: item.name,
+            value: item.season_number,
+            episode_count: item.episode_count,
+          });
+        }
+      });
+
+      setSeasomsList(seasons);
+    }
+  }, [serial]);
+
+  useEffect(() => {
+    if (torrents.length > 0) {
+      const data = torrents.map((item, index) => ({
+        value: index,
+        label:
+          item.seeds +
+          " " +
+          item.size +
+          " " +
+          item.title.substring(0, 30) +
+          "...",
+        magnet: item.magnet,
+      }));
+
+      setTorrentsList(data);
+      setSelectedOptionTorrent(data[0]);
+    }
+  }, [torrents]);
+
   const onChangeTorrent = (e) => {
     setSelectedOptionTorrent(e);
   };
@@ -56,17 +106,40 @@ export const SerialItem = () => {
     setSelectedOptionSubtlite(e);
   };
 
-  const onDownload = () => {
-    dispatch(downloadTorrent(selectedOptionTorrent, subtitlesList, serial));
+  const onChangeSeasom = (e) => {
+    setSelectedSeasom(e);
+
+    let episodes = [];
+
+    for (let i = 1; i <= e.episode_count; i++) {
+      episodes.push({
+        label: "Episode " + i,
+        value: i,
+      });
+    }
+
+    setEpisodeList(episodes);
+
+    if (selectedEpisode && selectedEpisode.value > episodes.length) {
+      setSelectedEpisode(episodes[0]);
+    }
   };
 
-  const onrefresh = () => {
-    dispatch(refresh());
+  const onChangeEpisode = (e) => {
+    setSelectedEpisode(e);
+
+    if (selectedSeasom && selectedEpisode)
+      dispatch(
+        getTorrentTV(serial, selectedSeasom.value, selectedEpisode.value)
+      );
   };
 
   useEffect(() => {
-    dispatch(getSerial(Number(id)));
-  }, [dispatch, id]);
+    if (selectedSeasom && selectedEpisode)
+      dispatch(
+        getEpisode(Number(id), selectedSeasom.value, selectedEpisode.value)
+      );
+  }, [selectedSeasom, selectedEpisode]);
 
   return (
     <div className="container">
@@ -95,28 +168,30 @@ export const SerialItem = () => {
                 ))}
             </div>
             <p>{overview}</p>
-            <div className="select">
-              <div className="button-play" style={{ paddingTop: "20px" }}>
-                {
-                  <button
-                    disabled={loadingTorrents || loadingSubtitles}
-                    style={{ width: "100px", height: "40px" }}
-                    onClick={onDownload}
-                  >
-                    Download
-                  </button>
-                }
+
+            <div className="menu">
+              <div className="seasom-episode">
+                <div className="Select-seasom">
+                  <Select
+                    styles={customStyles}
+                    isSearchable={false}
+                    onChange={(e) => onChangeSeasom(e)}
+                    value={selectedSeasom}
+                    options={seasomList}
+                  />
+                </div>
+
+                <div className="Select-episode">
+                  <Select
+                    styles={customStyles}
+                    isSearchable={false}
+                    onChange={(e) => onChangeEpisode(e)}
+                    value={selectedEpisode}
+                    options={episodeList}
+                  />
+                </div>
               </div>
-              <div className="button-play">
-                {
-                  <button
-                    style={{ width: "100px", height: "40px" }}
-                    onClick={onrefresh}
-                  >
-                    Refresh library
-                  </button>
-                }
-              </div>
+
               <div className="Select-torrent">
                 <Select
                   styles={customStyles}
@@ -138,6 +213,22 @@ export const SerialItem = () => {
                 />
               </div>
             </div>
+
+            {episode && (
+              <div className="detailsEpisode">
+                <img src={IMG_API_HIGH + episode.still_path} alt={name} />
+                <div className="descEpisode">
+                  <h2>{episode.name}</h2>
+
+                  <span>{episode.vote_average * 10}% | </span>
+
+                  <span>
+                    <Moment format="MMM D, YYYY">{episode.air_date}</Moment>
+                  </span>
+                  <p> {episode.overview}</p>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -6,10 +6,8 @@ import Moment from "react-moment";
 
 import { getMovie } from "../store/actions/movie";
 import {
-  downloadTorrent,
   playTorrent,
   shutdown,
-  refresh,
   resetStateTorrents,
 } from "../store/actions/torrent";
 import { resetStateSubtitles } from "../store/actions/subtitles";
@@ -102,25 +100,14 @@ export const MovieItem = () => {
     }
   }, [torrents, subtitles]);
 
-  const onDownload = () => {
-    dispatch(downloadTorrent(selectedOptionTorrent, subtitlesList, movie));
-  };
-
   const onPlay = () => {
     dispatch(playTorrent(selectedOptionTorrent, movie, setShowPlayer));
   };
 
-  const stop = () => {
-    dispatch(shutdown());
-    setShowPlayer(false);
-  };
-
-  const onrefresh = () => {
-    dispatch(refresh());
-  };
-
   const onChangeTorrent = (e) => {
     setSelectedOptionTorrent(e);
+    dispatch(shutdown());
+    setShowPlayer(false);
   };
 
   const onChangeSubtitle = (e) => {
@@ -194,38 +181,6 @@ export const MovieItem = () => {
                   }
                 </div>
 
-                <div className="play">
-                  {
-                    <button
-                      disabled={loadingTorrents || loadingSubtitles}
-                      style={{ width: "100px", height: "40px" }}
-                      onClick={stop}
-                    >
-                      parar
-                    </button>
-                  }
-                </div>
-                <div className="download">
-                  {
-                    <button
-                      disabled={loadingTorrents || loadingSubtitles}
-                      style={{ width: "100px", height: "40px" }}
-                      onClick={onDownload}
-                    >
-                      Download
-                    </button>
-                  }
-                </div>
-                <div className="refresh">
-                  {
-                    <button
-                      style={{ width: "100px", height: "40px" }}
-                      onClick={onrefresh}
-                    >
-                      Refresh library
-                    </button>
-                  }
-                </div>
                 <div className="Select-torrent">
                   <Select
                     styles={customStyles}

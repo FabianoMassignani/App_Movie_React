@@ -9,7 +9,8 @@ import {
   SEARCH_SERIALS,
   GET_SERIAL_REQUEST,
   GET_SERIAL,
-  GET_SERIAL_FAIL,
+  GET_EPISODE_REQUEST,
+  GET_EPISODE,
 } from "../constants/serial";
 
 import { getTorrentTV } from "./torrent";
@@ -64,12 +65,23 @@ export const getSerial = (id) => async (dispatch) => {
       type: GET_SERIAL,
       payload: { ...resUS.data, overview: resBR.data.overview },
     });
-  } catch (error) {
+  } catch (error) {}
+};
+
+// Get Episode
+export const getEpisode = (id, season, episode) => async (dispatch) => {
+  try {
+    dispatch({ type: GET_EPISODE_REQUEST });
+
+    let res = await axios.get(
+      `https://api.themoviedb.org/3/tv/${id}/season/${season}/episode/${episode}?api_key=${API_KEY}&language=pt-BR`
+    );
+
     dispatch({
-      type: GET_SERIAL_FAIL,
-      payload: { message: error.response.data.status_message },
+      type: GET_EPISODE,
+      payload: res.data,
     });
-  }
+  } catch (error) {}
 };
 
 // Search Serials
@@ -89,10 +101,5 @@ export const searchSerials = (query) => async (dispatch) => {
         query: query,
       },
     });
-  } catch (error) {
-    dispatch({
-      type: GET_SERIALS_FAIL,
-      payload: { message: error.response.data.status_message },
-    });
-  }
+  } catch (error) {}
 };
