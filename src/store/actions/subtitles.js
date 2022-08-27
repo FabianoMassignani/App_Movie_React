@@ -8,19 +8,24 @@ import {
 
 import { HOST_API } from "../../globalVariables";
 
-export const getSubtitle = (nameBR, nameUS, date) => async (dispatch) => {
+export const getSubtitle = (resPT, resUS, similarity) => async (dispatch) => {
   dispatch({ type: GET_SUBTITLES_REQUEST });
 
-  const res = await axios.get(
-    `${HOST_API}/subtitle/subtitle?nameBR=${nameBR}&nameUS=${nameUS}&date=${date}`
-  );
-
-  dispatch({
-    type: GET_SUBTITLES,
-    payload: {
-      subtitles: res.data.subtitles,
-    },
-  });
+  await axios
+    .post(`${HOST_API}/subtitle/subtitle`, {
+      resPT: resPT,
+      resUS: resUS,
+      similarity: similarity,
+    })
+    .then(function (response) {
+      dispatch({
+        type: GET_SUBTITLES,
+        payload: {
+          subtitles: response.data.subtitles,
+        },
+      });
+    })
+    .catch((err) => console.log(err));
 };
 
 export const resetStateSubtitles = () => async (dispatch) => {

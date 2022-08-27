@@ -31,7 +31,7 @@ export const Searchbox = (props) => {
               ? "Search movies..."
               : props.serials
               ? "Search serials..."
-              : "Search actors..."
+              : "Search movies and serials ..."
           }
           value={query}
           onChange={(e) => setQuery(e.target.value)}

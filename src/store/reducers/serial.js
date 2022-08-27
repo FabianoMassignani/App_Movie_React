@@ -8,6 +8,7 @@ import {
   GET_SERIAL,
   GET_EPISODE,
   GET_EPISODE_REQUEST,
+  RESET_TV,
 } from "../constants/serial";
 
 export const serialListReducer = (
@@ -43,6 +44,8 @@ export const serialListReducer = (
         query: action.payload.query,
       };
     }
+    case RESET_TV:
+      return { ...state, serials: [] };
     default:
       return state;
   }
@@ -59,7 +62,7 @@ export const serialItemReducer = (
       return {
         ...state,
         serial: action.payload,
-        episode: null ,
+        episode: null,
         loading: false,
       };
     case GET_EPISODE_REQUEST:

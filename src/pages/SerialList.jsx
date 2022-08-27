@@ -2,99 +2,51 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import { Searchbox } from "../components/Searchbox";
 import { Spinner } from "../components/Spinner";
-import { Navbar } from "../components/Navbar";
-import { Button } from "../components/Button";
-import { InfiniteScrolling } from "../components/InfiniteScrolling";
 import { IMG_API_LOW } from "../globalVariables";
-import { SelectsFilters } from "../components/SelectsFilters";
-import { addSerials, getSerials } from "../store/actions/serial";
-// import { stopTorrent } from "../store/actions/torrent";
+import { MenuFilters } from "../components/MenuFilters";
+import { getSerials } from "../store/actions/serial";
+import { Navbar } from "../components/Navbar";
 
 export const SerialList = () => {
   const dispatch = useDispatch();
-  const [page, setPage] = useState(2);
-  const [dataLength, setDataLength] = useState(30);
-  const [hasMore, setHasMore] = useState(true);
-  const [showFilter, setShowFilter] = useState(false);
+
   const Filters = useSelector((state) => state.filters);
   const serialList = useSelector((state) => state.serialList);
-  const { filters, ordem } = Filters;
+  const { filters, ordem, page } = Filters;
   const { loading, serials, query, results, pages } = serialList;
-
-  const customStyles = {
-    option: (provided, state) => ({
-      ...provided,
-      borderBottom: "1px dotted pink",
-      color: state.isSelected ? "blue" : "black",
-      backgroundColor: "white",
-      fontSize: 14,
-    }),
-    control: (styles) => ({ ...styles, backgroundColor: "white" }),
-    singleValue: (styles, { data }) => ({ ...styles, fontSize: 14 }),
-  };
+  const [collapsed, setCollapsed] = useState(false);
 
   useEffect(() => {
-    if (!serials.length > 0) dispatch(getSerials());
-  }, [dispatch]);
-
-  const fetchNextPage = () => {
-    if (!query) {
-      dispatch(addSerials(page));
-      setPage(page + 1);
-      setDataLength(dataLength + 20);
-      if (page === pages) {
-        setHasMore(false);
-      }
-    }
-  };
-
-  const handleFilter = () => {
-    setShowFilter(!showFilter);
-  };
+    dispatch(getSerials(page, filters, ordem));
+  }, [dispatch, page, filters]);
 
   return (
-    <>
-      <div className="container">
-        <Navbar />
-
-        <div className="menu">
-          <div className="searchbox">
-            <Searchbox serials />
-          </div>
-          <div className="filter">
-            <Button handleFilter={handleFilter} showFilter={showFilter} />
-          </div>
-        </div>
-
-        <SelectsFilters showFilter={showFilter} page={page} setPage={setPage} />
-
-        {loading && !serials.length > 0 ? (
-          <Spinner />
-        ) : results !== 0 ? (
-          <>
-            <InfiniteScrolling
-              dataLength={dataLength}
-              next={fetchNextPage}
-              hasMore={!loading && hasMore}
-            >
+    <Navbar
+      total={pages}
+      currentPage={page}
+      children={
+        <>
+          {loading && !serials.length > 0 ? (
+            <Spinner />
+          ) : results !== 0 ? (
+            <>
               <div className="list-container">
                 {serials.map(
-                  (serial) =>
+                  (serial, index) =>
                     serial.poster_path && (
-                      <div className="card" key={serial.id}>
+                      <div className="card" key={index}>
                         <Link to={`/serial/${serial.id}`}>
                           <img
                             src={IMG_API_LOW + serial.poster_path}
                             alt={serial.title}
                           />
-                          <h3>{serial.name}</h3>
+                          <h3>{serial.title}</h3>
                           <p>
-                            <span>{serial.vote_average * 10}% |</span>
+                            <span>{serial.vote_average * 10}% | </span>
                             <span>
                               <Moment format="MMM D, YYYY">
-                                {serial.first_air_date}
+                                {serial.release_date}
                               </Moment>
                             </span>
                           </p>
@@ -103,12 +55,12 @@ export const SerialList = () => {
                     )
                 )}
               </div>
-            </InfiniteScrolling>
-          </>
-        ) : (
-          <h2 className="py-2 text-center">No TV Show Found</h2>
-        )}
-      </div>
-    </>
+            </>
+          ) : (
+            <h2 className="py-2 text-center">No TV Show Found</h2>
+          )}
+        </>
+      }
+    />
   );
 };

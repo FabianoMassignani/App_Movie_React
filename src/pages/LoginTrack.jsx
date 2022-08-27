@@ -3,7 +3,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import { Spinner } from "../components/Spinner";
-import { Navbar } from "../components/Navbar";
 
 import { Checkin, history, login, logout } from "../store/actions/trakt";
 
@@ -27,7 +26,6 @@ export const LoginTrack = () => {
 
   return (
     <div className="container">
-      <Navbar />
       {loading ? (
         <Spinner />
       ) : (

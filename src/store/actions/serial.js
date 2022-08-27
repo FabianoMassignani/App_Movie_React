@@ -17,13 +17,41 @@ import { getTorrentTV } from "./torrent";
 
 import { API_KEY, LANGUAGE } from "../../globalVariables";
 
-// Get Popular Serials
-export const getSerials = () => async (dispatch) => {
+// Get Serials
+export const getSerials = (page, filters, ordem) => async (dispatch) => {
   dispatch({ type: GET_SERIALS_REQUEST });
 
-  const res = await axios.get(
-    `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=${LANGUAGE}&page=1`
-  );
+  let res;
+
+  if (
+    !filters.genre &&
+    !filters.sort &&
+    !filters.vote &&
+    !filters.releaseDateGte &&
+    !filters.releaseDateLte &&
+    !filters.score
+  ) {
+    res = await axios.get(
+      `https://api.themoviedb.org/3/tv/${ordem}?api_key=${API_KEY}&language=${LANGUAGE}&page=${page}`
+    );
+  } else {
+    let requestString = "";
+
+    requestString += filters.genre ? "&with_genres=" + filters.genre : "";
+    requestString += filters.sort ? "&sort_by=" + filters.sort : "";
+    requestString += filters.vote ? "&vote_count.gte=" + filters.vote : "";
+    requestString += filters.releaseDateLte
+      ? "&release_date.lte=" + filters.releaseDateLte
+      : "";
+    requestString += filters.releaseDateGte
+      ? "&release_date.gte=" + filters.releaseDateGte
+      : "";
+    requestString += filters.score ? "&vote_average.gte=" + filters.score : "";
+
+    res = await axios.get(
+      `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}${requestString}&language=${LANGUAGE}&page=${page}`
+    );
+  }
 
   dispatch({
     type: GET_SERIALS,
@@ -32,19 +60,6 @@ export const getSerials = () => async (dispatch) => {
       pages: res.data.total_pages,
       results: res.data.total_results,
     },
-  });
-};
-
-// Add Popular Serials
-export const addSerials = (page) => async (dispatch) => {
-  dispatch({ type: ADD_SERIALS_REQUEST });
-
-  const res = await axios.get(
-    `https://api.themoviedb.org/3/tv/popular?api_key=${API_KEY}&language=${LANGUAGE}&page=${page}`
-  );
-  dispatch({
-    type: ADD_SERIALS,
-    payload: res.data.results,
   });
 };
 

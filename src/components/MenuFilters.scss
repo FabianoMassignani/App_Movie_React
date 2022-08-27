@@ -1,0 +1,17 @@
+.Filters {
+  display: flex;
+  padding: 0.5rem 1rem 0.5rem;
+  justify-content: space-between;
+  gap: 5px;
+  align-content: center;
+  align-items: center;
+}
+
+@media (max-width: 768px) {
+  .Filters {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    justify-content: center;
+    gap: 5px;
+  }
+}

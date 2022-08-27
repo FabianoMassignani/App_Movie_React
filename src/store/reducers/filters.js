@@ -1,18 +1,19 @@
 import {
+  SET_PAGE,
   SET_ORDEM,
   GET_GENRES,
   SET_FILTERS,
   RESET_FILTERS,
+  SET_NAVIGATE,
 } from "../constants/filters";
 
 export const filtersReducer = (
   state = {
+    page: 1,
     filters: {},
     genres: [],
-    ordem: {
-      value: "popular",
-      label: "popular",
-    },
+    ordem: "popular",
+    optionNavigate: "/",
   },
   action
 ) => {
@@ -34,6 +35,17 @@ export const filtersReducer = (
         ...state,
         genres: action.payload.genres,
       };
+    case SET_NAVIGATE:
+      return {
+        ...state,
+        optionNavigate: action.payload.optionNavigate,
+      };
+    case SET_PAGE:
+      return {
+        ...state,
+        page: action.payload.page,
+      };
+
     default:
       return state;
   }

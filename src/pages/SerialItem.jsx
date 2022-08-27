@@ -7,7 +7,7 @@ import Moment from "react-moment";
 import Select from "react-select";
 
 import {
-  playTorrent,
+  setTorrent,
   shutdown,
   resetStateTorrents,
   getTorrentTV,
@@ -142,96 +142,106 @@ export const SerialItem = () => {
   }, [selectedSeasom, selectedEpisode]);
 
   return (
-    <div className="container">
-      <Navbar />
-      {loading ? (
-        <Spinner />
-      ) : (
-        <div className="details">
-          <img
-            src={poster_path ? IMG_API_HIGH + poster_path : NO_IMAGE}
-            alt={name}
-          />
-          <div className="desc">
-            <h2>{name}</h2>
-
-            <span>{vote_average * 10}% | </span>
-
-            <span>
-              <Moment format="MMM D, YYYY">{first_air_date}</Moment>
-            </span>
-
-            <div className="genres">
-              {genres &&
-                genres.map((genre, id) => (
-                  <span key={genre.id}>{(id ? ", " : "") + genre.name} </span>
-                ))}
-            </div>
-            <p>{overview}</p>
-
-            <div className="menu">
-              <div className="seasom-episode">
-                <div className="Select-seasom">
-                  <Select
-                    styles={customStyles}
-                    isSearchable={false}
-                    onChange={(e) => onChangeSeasom(e)}
-                    value={selectedSeasom}
-                    options={seasomList}
-                  />
-                </div>
-
-                <div className="Select-episode">
-                  <Select
-                    styles={customStyles}
-                    isSearchable={false}
-                    onChange={(e) => onChangeEpisode(e)}
-                    value={selectedEpisode}
-                    options={episodeList}
-                  />
-                </div>
-              </div>
-
-              <div className="Select-torrent">
-                <Select
-                  styles={customStyles}
-                  value={selectedOptionTorrent}
-                  isSearchable={false}
-                  isLoading={loadingTorrents}
-                  onChange={(e) => onChangeTorrent(e)}
-                  options={torrentsList ? torrentsList : []}
+    <Navbar
+      noPagination={true}
+      children={
+        <>
+          <div className="container">
+            {loading ? (
+              <Spinner />
+            ) : (
+              <div className="details">
+                <img
+                  src={poster_path ? IMG_API_HIGH + poster_path : NO_IMAGE}
+                  alt={name}
                 />
-              </div>
-              <div className="Select-subtitles">
-                <Select
-                  styles={customStyles}
-                  value={selectedOptionSubtlite}
-                  isSearchable={false}
-                  isLoading={loadingSubtitles}
-                  onChange={(e) => onChangeSubtitle(e)}
-                  options={subtitlesList ? subtitlesList : []}
-                />
-              </div>
-            </div>
+                <div className="desc">
+                  <h2>{name}</h2>
 
-            {episode && (
-              <div className="detailsEpisode">
-                <img src={IMG_API_HIGH + episode.still_path} alt={name} />
-                <div className="descEpisode">
-                  <h2>{episode.name}</h2>
-
-                  <span>{episode.vote_average * 10}% | </span>
+                  <span>{vote_average * 10}% | </span>
 
                   <span>
-                    <Moment format="MMM D, YYYY">{episode.air_date}</Moment>
+                    <Moment format="MMM D, YYYY">{first_air_date}</Moment>
                   </span>
-                  <p> {episode.overview}</p>
+
+                  <div className="genres">
+                    {genres &&
+                      genres.map((genre, id) => (
+                        <span key={genre.id}>
+                          {(id ? ", " : "") + genre.name}{" "}
+                        </span>
+                      ))}
+                  </div>
+                  <p>{overview}</p>
+
+                  <div className="menu">
+                    <div className="seasom-episode">
+                      <div className="Select-seasom">
+                        <Select
+                          styles={customStyles}
+                          isSearchable={false}
+                          onChange={(e) => onChangeSeasom(e)}
+                          value={selectedSeasom}
+                          options={seasomList}
+                        />
+                      </div>
+
+                      <div className="Select-episode">
+                        <Select
+                          styles={customStyles}
+                          isSearchable={false}
+                          onChange={(e) => onChangeEpisode(e)}
+                          value={selectedEpisode}
+                          options={episodeList}
+                        />
+                      </div>
+                    </div>
+
+                    <div className="Select-torrent">
+                      <Select
+                        styles={customStyles}
+                        value={selectedOptionTorrent}
+                        isSearchable={false}
+                        isLoading={loadingTorrents}
+                        onChange={(e) => onChangeTorrent(e)}
+                        options={torrentsList ? torrentsList : []}
+                      />
+                    </div>
+                    <div className="Select-subtitles">
+                      <Select
+                        styles={customStyles}
+                        value={selectedOptionSubtlite}
+                        isSearchable={false}
+                        isLoading={loadingSubtitles}
+                        onChange={(e) => onChangeSubtitle(e)}
+                        options={subtitlesList ? subtitlesList : []}
+                      />
+                    </div>
+                  </div>
+
+                  {episode && (
+                    <div className="detailsEpisode">
+                      <img src={IMG_API_HIGH + episode.still_path} alt={name} />
+                      <div className="descEpisode">
+                        <h2>{episode.name}</h2>
+
+                        <span>{episode.vote_average * 10}% | </span>
+
+                        <span>
+                          <Moment format="MMM D, YYYY">
+                            {episode.air_date}
+                          </Moment>
+                        </span>
+                        <p> {episode.overview}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
           </div>
-        </div>
-      )}
-    </div>
+        </>
+      }
+    />
   );
 };

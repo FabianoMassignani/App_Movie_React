@@ -1,13 +1,12 @@
 import {
   GET_TORRENTS,
   GET_TORRENTS_REQUEST,
-  DOWNLOAD_TORRENT,
-  DOWNLOAD_TORRENT_REQUEST,
   STOP_TORRENT,
   STOP_TORRENT_REQUEST,
   RESET_STATES_TORRENTS,
   PLAY_TORRENT_REQUEST,
   PLAY_TORRENT,
+  GET_TORRENT_INFO,
 } from "../constants/torrent";
 
 export const torrentListReducer = (state = { torrents: [] }, action) => {
@@ -20,17 +19,11 @@ export const torrentListReducer = (state = { torrents: [] }, action) => {
         loadingTorrents: false,
         torrents: action.payload.torrents,
       };
-    case DOWNLOAD_TORRENT_REQUEST:
+    case GET_TORRENT_INFO:
       return {
         ...state,
-        loadingPlay: true,
+        info: action.payload.torrents,
       };
-    case DOWNLOAD_TORRENT:
-      return {
-        ...state,
-        loadingPlay: false,
-      };
-
     case PLAY_TORRENT_REQUEST:
       return {
         ...state,

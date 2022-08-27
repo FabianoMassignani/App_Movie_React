@@ -1,0 +1,15 @@
+.pagination-box {
+  display: flex;
+  padding: 1rem 0rem 0.5rem;
+  justify-content: center;
+  align-content: center;
+  align-items: center;
+}
+
+.pagination-box .ant-pagination-item-ellipsis {
+  color: #fff !important;
+}
+
+  // .pagination-box .ant-select-selector {
+  //   background-color: #2d3748  !important;
+  // }

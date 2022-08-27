@@ -2,10 +2,9 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Moment from "react-moment";
-import { Searchbox } from "../components/Searchbox";
+
 import { Spinner } from "../components/Spinner";
-import { Navbar } from "../components/Navbar";
-import { Button } from "../components/Button";
+
 import { InfiniteScrolling } from "../components/InfiniteScrolling";
 import { IMG_API_LOW } from "../globalVariables";
 
@@ -36,7 +35,6 @@ export const MovieHistoryList = () => {
   return (
     <>
       <div className="container">
-        <Navbar />
         {loading && !moviesTrakt.length > 0 ? (
           <Spinner />
         ) : resultsTrakt !== 0 ? (

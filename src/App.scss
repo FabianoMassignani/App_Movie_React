@@ -1,19 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap");
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
+
 body {
   font-family: "Poppins", Arial, sans-serif;
   background: #1a202c;
   color: white;
 }
+
 a {
   color: inherit;
   text-decoration: none;
 }
+
 ul {
   list-style: none;
 }
@@ -24,20 +27,52 @@ ul {
   margin: auto;
 }
 
-.menu {
-  display: flex;
-  gap: 10px;
-  align-items: center;
+#components-layout-demo-side .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.3);
+}
 
-  .searchbox {
-    width: 100%;
-  }
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.filters {
+  display: flex;
+  width: 100%;
+  align-items: center;
 }
 
 .list-container {
   display: grid;
   justify-items: center;
   grid-template-columns: repeat(5, 1fr);
+}
+
+.list-container-similar {
+  display: flex;
+  justify-items: center;
+
+  // Card | List Item
+  .card-smiliar {
+    display: flex;
+    margin: 0rem 0.1rem 0rem;
+ 
+    img {
+      // object-fit: cover;
+      width: 100%;
+    }
+    h3 {
+      font-size: 1rem;
+      color: white;
+    }
+    &:hover {
+      opacity: 0.75;
+    }
+    p {
+      font-weight: 200;
+    }
+  }
 }
 
 #filter {
@@ -81,7 +116,9 @@ ul {
   align-items: flex-start;
 
   img {
-    width: 35%;
+    width: 100%;
+    min-width: 420px;
+    max-width: 420px;
     padding: 1rem 1rem;
   }
   .desc {
@@ -107,6 +144,17 @@ ul {
       color: black;
       gap: 10px;
 
+      .torrent {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .subtitles {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
       .seasom-episode {
         display: flex;
         align-items: center;
@@ -123,13 +171,9 @@ ul {
         }
       }
 
-      .Select-torrent {
-        max-width: 400px;
-        min-width: 400px;
-      }
-      .Select-subtitles {
-        max-width: 400px;
-        min-width: 400px;
+      .options {
+        display: flex;
+        gap: 10px;
       }
     }
 

@@ -1,10 +1,10 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import VideoJS from "./VideoJS"; // point to where the functional component is stored
+import VideoJS from "../components/VideoJS";
 
 import { HOST_API } from "../globalVariables";
 
-export const Player = (props) => {
+export const VideoPlayer = ( ) => {
   const playerRef = React.useRef(null);
 
   const videoJsOptions = {
@@ -19,14 +19,14 @@ export const Player = (props) => {
         src: `${HOST_API}/video`,
       },
     ],
-    subtitles:
-      props.subtitles &&
-      props.subtitles.map((item, index) => ({
-        url: item.url,
-        language: item.language + index,
-        label: item.label,
-      })),
-    defaultSubtitle: props.subtitles[0].language + "0",
+    // subtitles:
+    //   props.subtitles &&
+    //   props.subtitles.map((item, index) => ({
+    //     url: item.url,
+    //     language: item.language + index,
+    //     label: item.label,
+    //   })),
+    // defaultSubtitle: props.subtitles[0].language + "0",
   };
 
   const addOffset = (offset) => {
@@ -125,7 +125,7 @@ export const Player = (props) => {
   // }, 1000);
 
   return (
-    <div className="fill-window">
+    <div className="container">
       <div className="video">
         <VideoJS options={videoJsOptions} onReady={handlePlayerReady} />
       </div>

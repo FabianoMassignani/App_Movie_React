@@ -1,46 +1,58 @@
 import axios from "axios";
 import {
-  ADD_MOVIES,
-  ADD_MOVIES_REQUEST,
   GET_MOVIES,
   GET_MOVIES_REQUEST,
   SEARCH_MOVIES,
   GET_MOVIE_REQUEST,
   GET_MOVIE,
+  GET_SIMILAR_MOVIES_REQUEST,
+  GET_SIMILAR_MOVIES,
   GET_MOVIES_TRAKT,
   GET_MOVIES_TRAKT_REQUEST,
   ADD_MOVIES_TRAKT,
   ADD_MOVIES_TRAKT_REQUEST,
 } from "../constants/movie";
 
+import { SET_ORDEM } from "../constants/filters";
+
 import { CLIENT_ID, TRAKT_USERNAME } from "../../globalVariables";
 import { getTorrentMovie } from "./torrent";
 import { getSubtitle } from "./subtitles";
-import { API_KEY, LANGUAGE } from "../../globalVariables";
+import { API_KEY, LANGUAGE, API_URL } from "../../globalVariables";
 
-// Get Popular Movies
-export const getMovies = (filters, ordem) => async (dispatch) => {
+// Get Movies
+export const getMovies = (page, filters, ordem) => async (dispatch) => {
   dispatch({ type: GET_MOVIES_REQUEST });
 
   let res;
 
-  if (Object.keys(filters).length === 0) {
+  if (
+    !filters.genre &&
+    !filters.sort &&
+    !filters.vote &&
+    !filters.releaseDateGte &&
+    !filters.releaseDateLte &&
+    !filters.score
+  ) {
     res = await axios.get(
-      `https://api.themoviedb.org/3/movie/${ordem.value}?api_key=${API_KEY}&language=${LANGUAGE}&page=1`
+      `${API_URL}/movie/${ordem}?api_key=${API_KEY}&language=${LANGUAGE}&page=${page}`
     );
   } else {
+    let requestString = "";
+
+    requestString += filters.genre ? "&with_genres=" + filters.genre : "";
+    requestString += filters.sort ? "&sort_by=" + filters.sort : "";
+    requestString += filters.vote ? "&vote_count.gte=" + filters.vote : "";
+    requestString += filters.releaseDateLte
+      ? "&release_date.lte=" + filters.releaseDateLte
+      : "";
+    requestString += filters.releaseDateGte
+      ? "&release_date.gte=" + filters.releaseDateGte
+      : "";
+    requestString += filters.score ? "&vote_average.gte=" + filters.score : "";
+
     res = await axios.get(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}${
-        filters.genre ? `&with_genres=${filters.genre.value}` : ""
-      }${filters.sort ? `&sort_by=${filters.sort.value}` : ""}${
-        filters.vote ? `&vote_count.gte=${filters.vote.value}` : ""
-      }${
-        filters.releaseDate
-          ? `&release_date.lte=${filters.releaseDate.value}`
-          : ""
-      }${
-        filters.score ? `&vote_average.gte=${filters.score.value}` : ""
-      }&language=${LANGUAGE}&page=1`
+      `${API_URL}/discover/movie?api_key=${API_KEY}${requestString}&language=${LANGUAGE}&page=${page}`
     );
   }
 
@@ -54,59 +66,40 @@ export const getMovies = (filters, ordem) => async (dispatch) => {
   });
 };
 
-// Get Popular Movies
-export const addMovies = (page, filters, ordem) => async (dispatch) => {
-  dispatch({ type: ADD_MOVIES_REQUEST });
-
-  let res;
-
-  if (Object.keys(filters).length === 0) {
-    res = await axios.get(
-      `https://api.themoviedb.org/3/movie/${ordem.value}?api_key=${API_KEY}&language=${LANGUAGE}&page=${page}`
-    );
-  } else {
-    res = await axios.get(
-      `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}${
-        filters.genre ? `&with_genres=${filters.genre.value}` : ""
-      }${filters.sort ? `&sort_by=${filters.sort.value}` : ""}${
-        filters.vote ? `&vote_count.gte=${filters.vote.value}` : ""
-      }${
-        filters.releaseDate
-          ? `&release_date.lte=${filters.releaseDate.value}`
-          : ""
-      }${
-        filters.score ? `&vote_average.gte=${filters.score.value}` : ""
-      }&language=${LANGUAGE}&page=${page}`
-    );
-  }
-  dispatch({
-    type: ADD_MOVIES,
-    payload: res.data.results,
-  });
-};
-
 // Get Single Movie
-export const getMovie = (id) => async (dispatch) => {
-  dispatch({ type: GET_MOVIE_REQUEST });
+export const getMovie =
+  (id, setMovieDataPT, setMovieDataUS) => async (dispatch) => {
+    dispatch({ type: GET_MOVIE_REQUEST });
+
+    const res = await axios.get(
+      `${API_URL}/movie/${id}?api_key=${API_KEY}&language=${LANGUAGE}`
+    );
+
+    dispatch({
+      type: GET_MOVIE,
+      payload: res.data,
+    });
+
+    const resPT = await axios.get(
+      `${API_URL}/movie/${id}?api_key=${API_KEY}&language=pt-BR`
+    );
+
+    setMovieDataUS(res.data);
+    setMovieDataPT(resPT.data);
+  };
+
+// Get Similar Movies
+export const getSimilarMovies = (id) => async (dispatch) => {
+  dispatch({ type: GET_SIMILAR_MOVIES_REQUEST });
 
   const res = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=${LANGUAGE}`
+    `${API_URL}/movie/${id}/similar?api_key=${API_KEY}&language=${LANGUAGE}&page=1`
   );
 
   dispatch({
-    type: GET_MOVIE,
+    type: GET_SIMILAR_MOVIES,
     payload: res.data,
   });
-
-  const resPT = await axios.get(
-    `https://api.themoviedb.org/3/movie/${id}?api_key=${API_KEY}&language=pt-BR`
-  );
-
-  dispatch(getTorrentMovie(res.data.title, res.data.release_date));
-
-  dispatch(
-    getSubtitle(resPT.data.title, res.data.title, res.data.release_date)
-  );
 };
 
 // Search Movies
@@ -114,7 +107,7 @@ export const searchMovies = (query) => async (dispatch) => {
   dispatch({ type: GET_MOVIES_REQUEST });
 
   const res = await axios.get(
-    `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&page=1`
+    `${API_URL}/search/movie?api_key=${API_KEY}&query=${query}&page=1`
   );
 
   dispatch({
@@ -146,7 +139,7 @@ export const getMoviesHistory = () => async (dispatch) => {
 
   for (let i in res.data) {
     let resTmdb = await axios.get(
-      `https://api.themoviedb.org/3/movie/${res.data[i].movie.ids.tmdb}?api_key=${API_KEY}&language=${LANGUAGE}`
+      `${API_URL}/movie/${res.data[i].movie.ids.tmdb}?api_key=${API_KEY}&language=${LANGUAGE}`
     );
 
     moviesTrakt.push(resTmdb.data);
@@ -178,7 +171,7 @@ export const addMoviesHistory = (page) => async (dispatch) => {
 
   for (let i in resTrakt.data) {
     let resTmdb = await axios.get(
-      `https://api.themoviedb.org/3/movie/${resTrakt.data[i].movie.ids.tmdb}?api_key=${API_KEY}&language=${LANGUAGE}`
+      `${API_URL}/movie/${resTrakt.data[i].movie.ids.tmdb}?api_key=${API_KEY}&language=${LANGUAGE}`
     );
 
     dispatch({

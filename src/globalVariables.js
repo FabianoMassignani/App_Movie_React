@@ -1,13 +1,14 @@
 import NoImage from "./assets/image-not-found.png";
 
-export const HOST_API = "http://192.168.0.100:3001";
+export const HOST_API = "http://192.168.0.50:3001";
 
 //tmdb
+export const API_URL = "https://api.themoviedb.org/3";
 export const API_KEY = "e033694029aca8ecc22a82a3b615a643";
 export const LANGUAGE = "en-US";
 
-export const IMG_API_LOW = "https://image.tmdb.org/t/p/w300";
-export const IMG_API_HIGH = "https://image.tmdb.org/t/p/w400";
+export const IMG_API_LOW = "https://image.tmdb.org/t/p/w342";
+export const IMG_API_HIGH = "https://image.tmdb.org/t/p/w780";
 export const NO_IMAGE = NoImage;
 
 // track

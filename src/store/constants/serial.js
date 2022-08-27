@@ -12,3 +12,5 @@ export const GET_SERIAL = "GET_SERIAL";
 
 export const GET_EPISODE_REQUEST = "GET_EPISODE_REQUEST";
 export const GET_EPISODE = "GET_EPISODE";
+
+export const RESET_TV = "RESET_TV";

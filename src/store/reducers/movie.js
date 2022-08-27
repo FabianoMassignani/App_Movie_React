@@ -1,11 +1,11 @@
 import {
   GET_MOVIES,
   GET_MOVIES_REQUEST,
-  ADD_MOVIES,
-  ADD_MOVIES_REQUEST,
   SEARCH_MOVIES,
   GET_MOVIE_REQUEST,
   GET_MOVIE,
+  GET_SIMILAR_MOVIES_REQUEST,
+  GET_SIMILAR_MOVIES,
   GET_MOVIES_TRAKT,
   GET_MOVIES_TRAKT_REQUEST,
   ADD_MOVIES_TRAKT,
@@ -14,14 +14,10 @@ import {
 } from "../constants/movie";
 
 export const movieListReducer = (
-  state = { movies: [], moviesTrakt: [] },
+  state = { movies: [], moviesTrakt: [], moviesSimilar: [] },
   action
 ) => {
   switch (action.type) {
-    case RESET_MOVIES:
-      return { ...state, movies: [] };
-
-    //---------------------------------------------------------
     case GET_MOVIES_REQUEST:
       return { ...state, loading: true, movies: [] };
     case GET_MOVIES:
@@ -32,15 +28,6 @@ export const movieListReducer = (
         pages: action.payload.pages,
         results: action.payload.results,
       };
-    case ADD_MOVIES_REQUEST:
-      return { ...state, nextLoading: true };
-    case ADD_MOVIES:
-      return {
-        ...state,
-        nextLoading: false,
-        movies: [...state.movies, ...action.payload],
-      };
-    //---------------------------------------------------------
     case GET_MOVIES_TRAKT_REQUEST:
       return { ...state, loading: true, moviesTrakt: [] };
     case GET_MOVIES_TRAKT:
@@ -61,8 +48,6 @@ export const movieListReducer = (
         loading: false,
         moviesTrakt: [...state.moviesTrakt, ...action.payload],
       };
-
-    //---------------------------------------------------------
     case SEARCH_MOVIES: {
       return {
         ...state,
@@ -73,6 +58,18 @@ export const movieListReducer = (
         query: action.payload.query,
       };
     }
+    case GET_SIMILAR_MOVIES_REQUEST:
+      return { ...state, loadingSimilarMovies: true };
+    case GET_SIMILAR_MOVIES: {
+      return {
+        ...state,
+        loadingSimilarMovies: false,
+        movies: action.payload.results,
+        results: action.payload.total_results,
+      };
+    }
+    case RESET_MOVIES:
+      return { ...state, movies: [] };
     default:
       return state;
   }
