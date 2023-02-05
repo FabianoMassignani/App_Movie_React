@@ -3,34 +3,33 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@emotion/react": "^11.8.2",
-    "@emotion/styled": "^11.8.1",
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "antd": "^4.21.6",
-    "axios": "^0.25.0",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/user-event": "^14.4.3",
+    "antd": "^5.1.6",
+    "axios": "^1.2.6",
     "lodash": "^4.17.21",
-    "moment": "^2.29.1",
-    "node-sass": "^7.0.1",
+    "moment": "^2.29.4",
+    "node-sass": "^8.0.0",
     "postcss-flexbugs-fixes": "^5.0.2",
     "postcss-normalize": "^10.0.1",
-    "postcss-preset-env": "^7.4.1",
+    "postcss-preset-env": "^8.0.1",
     "react-dom": "^17.0.2",
     "react-infinite-scroll-component": "^6.1.0",
-    "react-moment": "^1.1.1",
-    "react-multi-carousel": "^2.8.0",
-    "react-redux": "^7.2.6",
-    "react-router-dom": "^6.3.0",
-    "react-scripts": "^5.0.0",
-    "react-select": "^5.2.2",
-    "redux": "^4.1.2",
+    "react-moment": "^1.1.3",
+    "react-multi-carousel": "^2.8.2",
+    "react-redux": "^8.0.5",
+    "react-router-dom": "^6.8.0",
+    "react-scripts": "^5.0.1",
+    "react-select": "^5.7.0",
+    "redux": "^4.2.0",
     "redux-devtools-extension": "^2.13.9",
-    "redux-thunk": "^2.4.1",
-    "semantic-ui-react": "^2.1.2",
+    "redux-thunk": "^2.4.2",
+    "semantic-ui-react": "^2.1.4",
     "start": "^5.1.0",
-    "video.js": "^7.18.1",
-    "web-vitals": "^2.1.4"
+    "video.js": "^7.21.1",
+    "web-vitals": "^3.1.1"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -57,6 +56,6 @@
     ]
   },
   "devDependencies": {
-    "@types/react-redux": "^7.1.15"
+    "@types/react-redux": "^7.1.25"
   }
 }
