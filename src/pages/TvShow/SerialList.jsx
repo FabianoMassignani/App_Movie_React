@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import Moment from "react-moment";
-import { Spinner } from "../components/Spinner";
-import { IMG_API_LOW } from "../globalVariables";
-import { MenuFilters } from "../components/MenuFilters";
-import { getSerials } from "../store/actions/serial";
-import { Navbar } from "../components/Navbar";
+import { Spinner } from "../../components/Spinner";
+import { IMG_API_LOW } from "../../globalVariables";
+import { MenuFilters } from "../../components/MenuFilters";
+import { getSerials } from "../../store/actions/serial";
+import { Navbar } from "../../components/Navbar";
 
 export const SerialList = () => {
   const dispatch = useDispatch();

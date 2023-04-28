@@ -3,24 +3,27 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import Moment from "react-moment";
-import { MenuFilters } from "../components/MenuFilters";
+import { MenuFilters } from "../../components/MenuFilters";
 import { Select, Button, Image, Space } from "antd";
-import { IMG_API_LOW } from "../globalVariables";
+import { IMG_API_LOW } from "../../globalVariables";
 import { Link } from "react-router-dom";
 import { InputNumber } from "antd";
 import { DownOutlined } from "@ant-design/icons";
-import { getMovie, getSimilarMovies } from "../store/actions/movie";
+import { getMovie, getSimilarMovies } from "../../store/actions/movie";
 import {
   setTorrent,
   shutdown,
   resetStateTorrents,
   getTorrentMovie,
   getTorrentInfo,
-} from "../store/actions/torrent";
-import { resetStateSubtitles, getSubtitle } from "../store/actions/subtitles";
-import { Spinner } from "../components/Spinner";
-import { Navbar } from "../components/Navbar";
-import { IMG_API_HIGH, NO_IMAGE } from "../globalVariables";
+} from "../../store/actions/torrent";
+import {
+  resetStateSubtitles,
+  getSubtitle,
+} from "../../store/actions/subtitles";
+import { Spinner } from "../../components/Spinner";
+import { Navbar } from "../../components/Navbar";
+import { IMG_API_HIGH, NO_IMAGE } from "../../globalVariables";
 
 import { DownloadOutlined } from "@ant-design/icons";
 

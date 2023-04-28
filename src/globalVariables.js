@@ -1,6 +1,6 @@
 import NoImage from "./assets/image-not-found.png";
 
-export const HOST_API = " ";
+export const HOST_API = "";
 
 //tmdb
 export const API_URL = "https://api.themoviedb.org/3";

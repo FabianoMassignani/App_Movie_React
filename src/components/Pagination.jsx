@@ -16,6 +16,7 @@ export const PaginationBar = (props) => {
   return (
     <div className="pagination-box">
       <Pagination
+        colorPrimary={"#1677ff"}
         showSizeChanger={false}
         onChange={onChange}
         total={props.total}

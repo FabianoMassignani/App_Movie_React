@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
-import { Spinner } from "../components/Spinner";
+import { Spinner } from "../../components/Spinner";
 
-import { Checkin, history, login, logout } from "../store/actions/trakt";
+import { Checkin, history, login, logout } from "../../store/actions/trakt";
 
 export const LoginTrack = () => {
   const dispatch = useDispatch();

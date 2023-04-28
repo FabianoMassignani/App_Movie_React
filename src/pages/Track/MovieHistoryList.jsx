@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import Moment from "react-moment";
 
-import { Spinner } from "../components/Spinner";
+import { Spinner } from "../../components/Spinner";
 
-import { InfiniteScrolling } from "../components/InfiniteScrolling";
-import { IMG_API_LOW } from "../globalVariables";
+import { InfiniteScrolling } from "../../components/InfiniteScrolling";
+import { IMG_API_LOW } from "../../globalVariables";
 
-import { getMoviesHistory, addMoviesHistory } from "../store/actions/movie";
+import { getMoviesHistory, addMoviesHistory } from "../../store/actions/movie";
 
 export const MovieHistoryList = () => {
   const dispatch = useDispatch();

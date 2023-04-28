@@ -10,19 +10,8 @@ export const Navbar = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { Header, Content, Footer, Sider } = Layout;
-  const [collapsed, setCollapsed] = useState(false);
   const Filters = useSelector((state) => state.filters);
   const { optionNavigate } = Filters;
-
-  // const onSelect = (item) => {
-  //   navigate(item.key, { replace: true });
-  //   dispatch(setNavigate(item.key));
-  // };
-
-  const onClick = (item) => {
-    navigate(item.key, { replace: true });
-    dispatch(setNavigate(item.key));
-  };
 
   const items = [
     { label: "Inicio", key: "/", icon: <HomeOutlined /> },
@@ -45,21 +34,16 @@ export const Navbar = (props) => {
         minHeight: "100vh",
       }}
     >
-      <Sider
-        collapsible
-        collapsed={collapsed}
-        onCollapse={(value) => setCollapsed(value)}
-      >
-        <div className="logo" />
-        <Menu
-          selectedKeys={[optionNavigate]}
-          //onSelect={onSelect}
-          onClick={onClick}
-          items={items}
-          theme="dark"
-          mode="vertical"
-        ></Menu>
-      </Sider>
+      <Menu
+        selectedKeys={[optionNavigate]}
+        onClick={(item) => {
+          navigate(item.key, { replace: true });
+          dispatch(setNavigate(item.key));
+        }}
+        items={items}
+        theme="dark"
+        mode="horizontal"
+      />
       <Layout className="site-layout">
         <Content
           style={{
@@ -67,15 +51,8 @@ export const Navbar = (props) => {
           }}
         >
           <div className="container">
-            <>
-              {props.children}
-              {props.noPagination ? null : (
-                <PaginationBar
-                  total={props.total}
-                  current={props.currentPage}
-                />
-              )}
-            </>
+            {props.children}
+            <PaginationBar total={props.total} current={props.currentPage} />
           </div>
         </Content>
         <Footer
@@ -84,7 +61,7 @@ export const Navbar = (props) => {
             background: "#1a202c",
           }}
         >
-          ©2021 Created by Fabiano
+          ©2023 Created by Fabiano
         </Footer>
       </Layout>
     </Layout>

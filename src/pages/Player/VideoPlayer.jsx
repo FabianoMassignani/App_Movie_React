@@ -1,8 +1,8 @@
 import React from "react";
 import { useSelector } from "react-redux";
-import VideoJS from "../components/VideoJS";
+import VideoJS from "../../components/VideoJS";
 
-import { HOST_API } from "../globalVariables";
+import { HOST_API } from "../../globalVariables";
 
 export const VideoPlayer = ( ) => {
   const playerRef = React.useRef(null);

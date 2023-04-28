@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { getSerial, getEpisode } from "../store/actions/serial";
-import { Navbar } from "../components/Navbar";
+import { getSerial, getEpisode } from "../../store/actions/serial";
+import { Navbar } from "../../components/Navbar";
 import Moment from "react-moment";
 import Select from "react-select";
 
@@ -11,10 +11,10 @@ import {
   shutdown,
   resetStateTorrents,
   getTorrentTV,
-} from "../store/actions/torrent";
+} from "../../store/actions/torrent";
 
-import { Spinner } from "../components/Spinner";
-import { IMG_API_HIGH, NO_IMAGE } from "../globalVariables";
+import { Spinner } from "../../components/Spinner";
+import { IMG_API_HIGH, NO_IMAGE } from "../../globalVariables";
 
 export const SerialItem = () => {
   const { id } = useParams();

@@ -2,13 +2,13 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { Home } from "./pages/Home";
-import { MovieList } from "./pages/MovieList";
-import { SerialList } from "./pages/SerialList";
-import { MovieItem } from "./pages/MovieItem";
-import { SerialItem } from "./pages/SerialItem";
-import { LoginTrack } from "./pages/LoginTrack";
-import { MovieHistoryList } from "./pages/MovieHistoryList";
-import { VideoPlayer } from "./pages/VideoPlayer";
+import { MovieList } from "./pages/Movie/MovieList";
+import { SerialList } from "./pages/TvShow/SerialList";
+import { MovieItem } from "./pages/Movie/MovieItem";
+import { SerialItem } from "./pages/TvShow/SerialItem";
+import { LoginTrack } from "./pages/Track/LoginTrack";
+import { MovieHistoryList } from "./pages/Track/MovieHistoryList";
+import { VideoPlayer } from "./pages/Player/VideoPlayer";
 import { NotFoundPage } from "./pages/NotFoundPage";
 
 import "./App.scss";
