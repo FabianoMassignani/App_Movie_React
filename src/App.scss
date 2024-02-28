@@ -57,10 +57,11 @@ ul {
   .card-smiliar {
     display: flex;
     margin: 0rem 0.1rem 0rem;
- 
+
     img {
-      // object-fit: cover;
       width: 100%;
+      min-width: 150px;
+      padding: 0.5rem 0.3rem;
     }
     h3 {
       font-size: 1rem;
@@ -117,21 +118,26 @@ ul {
 
   img {
     width: 100%;
-    min-width: 420px;
-    max-width: 420px;
+    min-width: 320px;
+    max-width: 350px;
     padding: 1rem 1rem;
   }
+
   .desc {
+    color: white;
     margin: 1.5rem 1rem 2rem;
+
     h2 {
       font-size: 1.5rem;
       font-weight: 400;
       color: white;
     }
+
     span {
       font-weight: 10;
       font-size: 1.1rem;
     }
+
     p {
       margin: 1rem 0;
       font-weight: 5;

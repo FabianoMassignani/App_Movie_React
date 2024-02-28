@@ -187,7 +187,7 @@ export const MovieItem = () => {
                       <p>{overview}</p>
                     </div>
 
-                    <div className="menu">
+                    {/* <div className="menu">
                       <div className="torrent">
                         <Select
                           style={{
@@ -253,7 +253,7 @@ export const MovieItem = () => {
                       >
                         Download and play
                       </Button>
-                    </div>
+                    </div> */}
 
                     {/* <div style={{ display: `grid` }}>
                       <div className="info">{info ? info.peers : null} </div>
@@ -278,6 +278,7 @@ export const MovieItem = () => {
                     </div> */}
                   </div>
                 </div>
+
                 <div className="similar">
                   <>
                     {loadingSimilarMovies ? (
@@ -294,7 +295,7 @@ export const MovieItem = () => {
                                       src={IMG_API_LOW + movie.poster_path}
                                       alt={movie.title}
                                     />
-                                    {/* <h3>{movie.title}</h3>
+                                    <h3>{movie.title}</h3>
                                     <p>
                                       <span>{movie.vote_average * 10}% | </span>
                                       <span>
@@ -302,7 +303,7 @@ export const MovieItem = () => {
                                           {movie.release_date}
                                         </Moment>
                                       </span>
-                                    </p> */}
+                                    </p>
                                   </Link>
                                 </div>
                               )
